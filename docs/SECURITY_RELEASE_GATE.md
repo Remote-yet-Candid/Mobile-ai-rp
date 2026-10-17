@@ -1,33 +1,25 @@
-# 安全审计与 Gate 0 推进规则
+# 安全审计与发布门禁（Gate 0）
 
-## 当前判断
+## 开发阶段与正式发布分开
 
-截至2026-10-17（Asia/Shanghai），node-forge 与 braces 两项 high 公告均未撤回，公告没有已修复版本，npm 已发布版本也没有可信修复。详细来源、受影响路径和实际命令见[核验记录](validation/gate0-ci-security.md)及[Issue #7](https://github.com/Remote-yet-Candid/Mobile-ai-rp/issues/7)。依赖来自工具链，不能因此忽略审计；当前 Android bundle 的模块检查也不构成整体安全豁免。
+当前 Expo CLI/Metro 间接依赖的 node-forge、braces 存在尚未修复的 high 安全公告；详见 [Issue #7](https://github.com/Remote-yet-Candid/Mobile-ai-rp/issues/7) 与 [既有核验记录](validation/gate0-ci-security.md)。不以功能通过推断安全通过。
 
-## 相互独立的结果
+- `.github/workflows/ci.yml`：普通 push(main)/PR/手动触发，仅运行 **Functional validation**（frozen install、pnpm check、Android export）。这是开发反馈，不等于生产发布批准。
+- `.github/workflows/security-audit.yml`：独立 **Security audit**，每月首日计划运行及手动触发；继续执行 `pnpm audit --audit-level high --prod`，漏洞未修复时必须保持失败。这减少重复通知，但不会消除风险。定期计划任务只在仓库默认分支包含该工作流后才会自动执行；可能受到 GitHub Actions 调度延迟/停用政策影响。
+- `.github/workflows/release-preflight.yml`：**仅手动触发**，对同一选定提交重新运行功能和安全检查，并由 **Release prerequisites** 检查实际结果；任一步失败/跳过/取消都会阻断门禁。它不执行发布，也不自动获得安全豁免。
 
-| GitHub Actions 检查名 | 内容                                                       | 当前预期 | 意义                                                  |
-| --------------------- | ---------------------------------------------------------- | -------- | ----------------------------------------------------- |
-| Functional validation | frozen install、格式/lint/边界/类型/100项测试、Android导出 | 通过     | 工程功能基线；不证明真机或安全通过                    |
-| Security audit        | frozen install、`pnpm audit --audit-level high --prod`     | 失败     | 两项 high 尚未修复；网络/安装错误同样不能视为审计通过 |
-| Release prerequisites | 检查上述两个 Job 的实际结果，失败/取消/跳过均阻断          | 失败     | 自动发布前置未满足；不会把跳过的审计当成成功          |
+## 目前可做与不可做
 
-功能 Job 不依赖审计 Job，审计失败不再遮盖已通过的测试与导出。审计失败仍使整个 workflow 失败。没有 `continue-on-error`、漏洞忽略表、`audit fix --force`、盲目 override 或未核验 fork。
+允许继续使用受控 code3 Gate 0 测试 APK 进行 Android 真机验收；继续保持 PR #21 为 Draft。既有 APK 仅为测试签名的技术验证产物，不是安全审计通过或可公开分发的正式版。
 
-PR 更新触发一次 CI，main 推送仍检查；同一 PR 的过时运行自动取消，避免 push 和 PR 为同一分支重复跑两遍。取消不代表成功，不针对上游未修复公告无限重试。
+**禁止正式发布：** 在 Issue #7 风险得到可信修复或经明确安全评审处理、同一提交正式发布前检查通过、真机与人工安全审阅完成前，不得发布生产 APK/AAB、正式 Release 或对外声称安全合格。当前 manual preflight 是可审计的流程检查，不是硬性的 GitHub Releases API 保护：需要仓库管理员配置受保护 environment、权限和审核政策，并保证正式发布自动化依赖这些条件。
 
-## Gate 0 可以继续的范围
+## main 分支保护的区分
 
-使用现有 code3 Draft 测试 APK，集中完成 HONOR 90 Pro（Android15 / MagicOS9.0）的真实卡读取、1000消息分页/重开、真实网络收流/取消等证据。仅用合成数据和作者明确选择的本地文件，不因功能正常宣称安全或 Gate 0 全部通过。按阶段汇总问题；仅在验收阻断缺陷或一个完整验收批次完成后制作新 APK，不为 CI/文档小更新重打包。
+建议日常 main 的 required status check 设为 `Functional validation`，以便正常进行开发分支审查与合并。不要将仅手动运行的 `Security audit`、`Release prerequisites` 错设为每个普通 PR 的必需检查，否则会产生永远待运行/无法合并的状态。**如果项目要求安全失败时连开发合并都禁止，则必须另行采用严格合并政策，不能声称当前开发友好策略提供了该保证。**
 
-现有分发 workflow 只允许向固定未发布 Draft 附加已校验测试文件；不发布正式版本。不把工具链的 forge 验证等同于 Android 平台 TLS 或 `apksigner` 的 APK v2 校验。禁止将开发/构建服务公开暴露并处理不可信证书或 glob 配置；不执行卡片、预设或第三方扩展脚本，不使用测试凭据处理生产签名或私有聊天。
+建议 `Require a pull request before merging`。若只有作者一个可审批成员，先不要设置无法满足的强制他人批准门槛。当前 API 没有核实仓库保护是否已启用；以上属于管理员待确认配置，不能把本文档当作已配置成功的证据。
 
-## 正式发布必须满足
+## 安全漏洞跟踪原则
 
-1. Issue #7 的修复条件完成：可信上游修复版本或经供应链/兼容性评审的依赖链变更；冻结锁文件、重新核对实际安装版本和路径，high/critical 审计归零。未解决的其他风险也必须逐项记录和评审。
-2. 同一待发布提交的 `Functional validation`、`Security audit`、`Release prerequisites` 全部成功；人工安全评审和 Gate 0 真机验收完成并记录审核者、提交、证据和未决风险。不以旧提交的绿色状态代替当前提交。
-3. 后续正式发布/production workflow 必须依赖这些前置结果，并使用需要人工安全审核的受保护发布 environment。当前没有自动正式发布流程；不得通过脚本或 GitHub 发布按钮绕过上述政策。
-
-仓库管理员应将上述三个检查设为 main 的必需检查，并要求 PR review，禁止直接推送和绕过检查。当前两个可用认证读取传统分支保护均返回403，branch rules 查询为空；这不证明传统保护不存在，也不证明已配置强制检查。**代码中的失败检查已提供；本次未修改 GitHub 管理设置，现有强制保护是否启用尚未核实，需管理员在仓库设置中核对并补齐。**不要把此文档或失败 Job 当作已启用远端权限保护的证据。
-
-复查在上游发布/公告更新、依赖变更或正式阶段评审时进行；Dependabot 每周检查继续保留。只重新运行有新增证据或网络故障诊断依据的失败步骤。
+不关闭审计、不使用 `continue-on-error` 伪绿、不采用未验证 fork 或盲目 dependency override。出现可信补丁、影响范围变化或准备正式发布时及时手动执行安全审计。记录依赖版本、锁文件、风险说明和审核结果。安全扫描是辅助证据，不能替代人工安全审查。
