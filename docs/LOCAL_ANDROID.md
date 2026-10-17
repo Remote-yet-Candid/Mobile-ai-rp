@@ -4,7 +4,9 @@
 
 ## 当前结果
 
-Expo prebuild已成功；原生Gradle实际执行69个任务，在react-native-screens/worklets的AAR依赖解析处失败。Maven Central将`react-android-0.88.0-release.aar`跳转到`https://repo.reactnative.dev/maven2/...`，代理返回403。**没有生成APK**，更没有验证签名/安装/启动。该域名已补入环境草稿；需要运行时设置生效后再重试。
+2026-10-17环境发布后，官方AAR下载已恢复，`pnpm apk:local`完整退出0：bundle子任务54s，assembleRelease 6m45s，530 actionable tasks（467 executed/63 up-to-date）。APK为artifacts/mobile-ai-rp-gate0-arm64.apk（34278797 bytes），v2测试签名、ARM64-only、内置Hermes、ZIP完整性及16KiB zipalign检查通过。SHA256 `87e7debed20137d29e734195fd1f3420f719a8e36ca2be4e5710d8cd8976d93e`。尚未安装或启动手机，EAS也尚未构建；详见[最新报告](validation/gate0-published-environment.md)。
+
+历史上首次缺JDK17已修正，第二次69任务后遇官方repo.reactnative.dev重定向403；这些失败不再代表当前下载/编译状态，保留旧日志供诊断。
 
 ## 已准备且实际使用的工具
 
@@ -33,11 +35,11 @@ SDK/JDK仅在仓库外准备；没有复制进应用代码或关闭TLS。Java信
 
 ```sh
 pnpm apk:local --check       # 已运行通过；只检查工具路径，不构建
-pnpm apk:local               # 放行repo.reactnative.dev后执行
+pnpm apk:local               # 本次完整运行通过；可复用缓存再构建
 ```
 
-入口由本次实际命令整理：缺原生目录时prebuild，核对Gradle版本/官方checksum，刷新workspace JS bundle后复用native输出assembleRelease，成功后复制到ignored artifacts并验证签名/hash。入口语法和preflight通过，完整入口在域名放行后尚未跑通，不能把它称为成功构建脚本。
+入口由本次实际命令整理：缺原生目录时prebuild，核对Gradle版本/官方checksum，刷新workspace JS bundle后复用native输出assembleRelease，成功后复制到ignored artifacts并验证签名/hash。入口语法、preflight及完整流程本次均运行通过；只证明本实例构建与静态工件校验，未证明所有新机器复现或真机行为。
 
 当前原生目录由Expo生成且被Git忽略；不将生成的debug.keystore提交Git。不覆盖未来人工维护的原生工程，SDK/config插件变化先审阅再明确重新生成。Release-mode probe默认使用Expo模板DEBUG测试签名；未来真实EAS发布必须独立配置正确签名与application ID。不得当作production版发布。
 
-日志：artifacts/android-release-build.log（缺JDK17）、android-release-build-jdk17.log（AAR403）、android-sdk-install.log。已经下载的SDK/缓存随环境文件保留，但草稿保存不等于发布快照或验证新任务恢复。
+当前成功日志：artifacts/android-local-bundle.log、android-local-build.log；静态核验回执docs/validation/android-apk-validation.json。历史日志：artifacts/android-release-build.log（缺JDK17）、android-release-build-jdk17.log（AAR403）、android-sdk-install.log。已经下载的SDK/缓存随环境文件保留，但草稿保存不等于发布快照或验证新任务恢复。

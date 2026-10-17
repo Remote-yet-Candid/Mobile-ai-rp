@@ -1,6 +1,6 @@
 # Android构建和真机验收
 
-当前Android Hermes bundle导出通过；本地原生工程/SDK/JDK17已准备并尝试编译，但AAR下载被repo.reactnative.dev代理403阻塞，没有已生成/安装的APK。详见LOCAL_ANDROID.md。EAS云构建不要求本机Android SDK，但需要Expo账户、项目绑定及Android签名。不要把Key/token发送到聊天或提交Git。
+当前Android Hermes导出与本地Release-mode ARM64 APK编译/静态校验通过；APK使用生成的DEBUG测试签名，尚未在HONOR90Pro安装运行。详见LOCAL_ANDROID.md与validation/gate0-published-environment.md。Expo API可访问，但配置凭据被whoami与只读GraphQL返回bearer token invalid，EAS尚未提交构建。EAS云构建不要求本机Android SDK，但需要Expo账户、项目绑定及Android签名。不要把Key/token发送到聊天或提交Git。
 
 1. 在正式构建任务中安全配置EXPO_TOKEN或使用已授权CLI登录。核对账户权限后，在apps/mobile用`eas init`绑定正确项目，审阅生成的extra.eas.projectId，不编造ID。
 2. `dev.mobileairp.gate0`是实验package ID；公开发布前确认归属/最终application ID与升级连续性，不能随意改变已安装用户的签名/ID。
@@ -14,7 +14,7 @@
 ## 真机记录模板
 
 - 设备/Android/API/内存：未记录
-- APK build ID、commit、版本、hash、构建镜像：未生成
+- APK：本地测试APK已生成，基线b79d84b、0.0.1/code1、hash见validation/android-apk-validation.json；EAS build ID/镜像尚无
 - 独立安装/冷启动（无Metro）：未验证
 - SQLite准备1000消息、50条分页、滑动、关闭重开：未验证
 - expo/fetch模拟/真实网络流收取、取消、弱网、断流：未验证
@@ -25,3 +25,5 @@
 Lab内模拟是进程内SSE，不替代网络或真机验证。首次APK验收由持有Android设备的人按上述清单完成，问题回填对应Issue。
 
 当前验收设备为作者指定HONOR90Pro（ARM64），系统版本/实际安装/独立启动/性能仍未记录。/tools提供HTTPS expo/fetch与本地卡片选择入口，尚未在设备运行验证。
+
+按界面操作的设备验收步骤见[HONOR90PRO_ACCEPTANCE](HONOR90PRO_ACCEPTANCE.md)，未执行项不能因APK已编译而勾选。

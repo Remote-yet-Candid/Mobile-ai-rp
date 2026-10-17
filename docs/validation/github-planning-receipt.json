@@ -1,0 +1,131 @@
+{
+  "milestones": [
+    {
+      "title": "Gate 0 — 技术风险证明",
+      "number": 1,
+      "url": "https://github.com/Remote-yet-Candid/Mobile-ai-rp/milestone/1"
+    },
+    {
+      "title": "Gate 1 — v0.1 内测",
+      "number": 2,
+      "url": "https://github.com/Remote-yet-Candid/Mobile-ai-rp/milestone/2"
+    },
+    {
+      "title": "Gate 2 — v0.2 RP 专业版",
+      "number": 3,
+      "url": "https://github.com/Remote-yet-Candid/Mobile-ai-rp/milestone/3"
+    },
+    {
+      "title": "Gate 3 — 评估与公开测试",
+      "number": 4,
+      "url": "https://github.com/Remote-yet-Candid/Mobile-ai-rp/milestone/4"
+    },
+    {
+      "title": "Backlog — v0.3+ 按反馈决策",
+      "number": 5,
+      "url": "https://github.com/Remote-yet-Candid/Mobile-ai-rp/milestone/5"
+    }
+  ],
+  "issues": [
+    {
+      "key": "G0-01",
+      "number": 1,
+      "url": "https://github.com/Remote-yet-Candid/Mobile-ai-rp/issues/1"
+    },
+    {
+      "key": "G0-02",
+      "number": 2,
+      "url": "https://github.com/Remote-yet-Candid/Mobile-ai-rp/issues/2"
+    },
+    {
+      "key": "G0-03",
+      "number": 3,
+      "url": "https://github.com/Remote-yet-Candid/Mobile-ai-rp/issues/3"
+    },
+    {
+      "key": "G0-04",
+      "number": 4,
+      "url": "https://github.com/Remote-yet-Candid/Mobile-ai-rp/issues/4"
+    },
+    {
+      "key": "G0-05",
+      "number": 5,
+      "url": "https://github.com/Remote-yet-Candid/Mobile-ai-rp/issues/5"
+    },
+    {
+      "key": "G0-06",
+      "number": 6,
+      "url": "https://github.com/Remote-yet-Candid/Mobile-ai-rp/issues/6"
+    },
+    {
+      "key": "G0-07",
+      "number": 7,
+      "url": "https://github.com/Remote-yet-Candid/Mobile-ai-rp/issues/7"
+    },
+    {
+      "key": "G1-01",
+      "number": 8,
+      "url": "https://github.com/Remote-yet-Candid/Mobile-ai-rp/issues/8"
+    },
+    {
+      "key": "G1-02",
+      "number": 9,
+      "url": "https://github.com/Remote-yet-Candid/Mobile-ai-rp/issues/9"
+    },
+    {
+      "key": "G1-03",
+      "number": 10,
+      "url": "https://github.com/Remote-yet-Candid/Mobile-ai-rp/issues/10"
+    },
+    {
+      "key": "G1-04",
+      "number": 11,
+      "url": "https://github.com/Remote-yet-Candid/Mobile-ai-rp/issues/11"
+    },
+    {
+      "key": "G1-05",
+      "number": 12,
+      "url": "https://github.com/Remote-yet-Candid/Mobile-ai-rp/issues/12"
+    },
+    {
+      "key": "G2-01",
+      "number": 13,
+      "url": "https://github.com/Remote-yet-Candid/Mobile-ai-rp/issues/13"
+    },
+    {
+      "key": "G2-02",
+      "number": 14,
+      "url": "https://github.com/Remote-yet-Candid/Mobile-ai-rp/issues/14"
+    },
+    {
+      "key": "G2-03",
+      "number": 15,
+      "url": "https://github.com/Remote-yet-Candid/Mobile-ai-rp/issues/15"
+    },
+    {
+      "key": "G2-04",
+      "number": 16,
+      "url": "https://github.com/Remote-yet-Candid/Mobile-ai-rp/issues/16"
+    },
+    {
+      "key": "G2-05",
+      "number": 17,
+      "url": "https://github.com/Remote-yet-Candid/Mobile-ai-rp/issues/17"
+    },
+    {
+      "key": "G3-01",
+      "number": 18,
+      "url": "https://github.com/Remote-yet-Candid/Mobile-ai-rp/issues/18"
+    },
+    {
+      "key": "G3-02",
+      "number": 19,
+      "url": "https://github.com/Remote-yet-Candid/Mobile-ai-rp/issues/19"
+    },
+    {
+      "key": "P2-01",
+      "number": 20,
+      "url": "https://github.com/Remote-yet-Candid/Mobile-ai-rp/issues/20"
+    }
+  ]
+}

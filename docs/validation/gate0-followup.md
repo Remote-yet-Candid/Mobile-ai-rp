@@ -1,5 +1,7 @@
 # Gate 0后续执行报告
 
+历史记录：环境发布后的最新状态见[继续执行报告](gate0-published-environment.md)。以下保留当时失败证据。
+
 日期2026-10-17（Asia/Shanghai）。延续feat/gate0-foundation，不触碰main。总体Gate0仍未通过。
 
 ## 本次完成

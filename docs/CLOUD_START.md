@@ -10,8 +10,8 @@
 
 可选HTTP模拟服务：根目录`pnpm mock:sse`（loopback8787）。GET /health应为status=ok；POST /v1/chat/completions应收到Unicode text_delta的SSE和[DONE]。停止仅限自己启动的服务。App当前使用进程内mock；该HTTP服务不会自动连接手机。
 
-EAS项目/签名/账户尚未配置，host实物CCv3读取已通过；真实APK、网络expo/fetch、native卡片与真机性能仍待Gate0验收。参照ANDROID_BUILD，不在聊天、Git或EXPO_PUBLIC写入凭据。已有Git读权限不证明GitHub API写权限；按网络状态与操作错误诊断，复用平台认证，不因gh登录提示就索要PAT。
+EAS账户/项目/签名及APK/网络/卡片/性能验收状态以docs/validation/gate0-published-environment.md及后续报告为准；host实物CCv3读取不代表native通过。参照ANDROID_BUILD，不在聊天、Git或EXPO_PUBLIC写入凭据。已有Git读权限不证明GitHub API写权限；按网络状态与操作错误诊断，复用平台认证，不因gh登录提示就索要PAT。
 
-GitHub API需api.github.com放行；Expo API需api.expo.dev，本地原生AAR还需repo.reactnative.dev，草稿保存不等于运行时生效。配置生效后运行`pnpm planning:publish --dry-run`再按已授权目标运行`pnpm planning:publish`创建/复用5里程碑和20Issues。任务规格在.github/planning.json；不要重复创建已有plan标记任务。所有代码通过主题分支和一个可审阅PR，CI和人工审阅后合并，不直接推main。
+GitHub API需api.github.com、Expo API需api.expo.dev、本地原生AAR需repo.reactnative.dev；先核实实际网络策略，不能以草稿推断运行状态。2026-10-17发布后GitHub权限已验证、5里程碑/20Issues与draft PR #21已创建。后续补齐任务先运行`pnpm planning:publish --dry-run`再按已授权目标运行`pnpm planning:publish`创建/复用5里程碑和20Issues。任务规格在.github/planning.json；不要重复创建已有plan标记任务。所有代码通过主题分支和一个可审阅PR，CI和人工审阅后合并，不直接推main。
 
-可选native构建已准备JDK17/SDK/缓存，目标HONOR90Pro ARM64。`pnpm apk:local --check`检查路径；`pnpm apk:local`恢复构建。工具位置和代理CA配置见LOCAL_ANDROID.md；副本/缓存应保留在仓库外。当前AAR403未解决前不要无变化反复构建，也不要给失败run配旧APK。EXPO_TOKEN需求已在草稿声明，当前无值；只在设置安全填写，host测试与本地构建无需该Key。最新报告为docs/validation/gate0-followup.md。
+可选native构建已准备JDK17/SDK/缓存，目标HONOR90Pro ARM64。`pnpm apk:local --check`检查路径；`pnpm apk:local`恢复构建。工具位置和代理CA配置见LOCAL_ANDROID.md；副本/缓存应保留在仓库外。检查缓存、代理与当前CA仍有效后再构建；不要给失败run配旧APK。EXPO_TOKEN仅通过设置安全配置；变量存在/状态ready不证明Expo接受，需实际eas whoami。不要输出值、读取凭据文件或因占位符外观认定令牌无效；根据服务端认证结果诊断。host测试与本地构建无需Expo令牌。最新报告入口为docs/validation/gate0-published-environment.md，设备验收见docs/HONOR90PRO_ACCEPTANCE.md。

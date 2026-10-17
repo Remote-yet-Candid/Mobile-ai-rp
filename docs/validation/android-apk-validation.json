@@ -1,0 +1,21 @@
+{
+  "file": "mobile-ai-rp-gate0-arm64.apk",
+  "bytes": 34278797,
+  "sha256": "87e7debed20137d29e734195fd1f3420f719a8e36ca2be4e5710d8cd8976d93e",
+  "abis": ["arm64-v8a"],
+  "hermes_bytes": 2593784,
+  "hermes_sha256": "4141737371ce89291eecdcb46a0a469ab64bd96b793f21759124c9b844cdbbdb",
+  "package": "dev.mobileairp.gate0",
+  "version": "0.0.1",
+  "version_code": 1,
+  "min_sdk": 24,
+  "target_sdk": 36,
+  "debuggable": false,
+  "zip_integrity": true,
+  "zipalign_16k": true,
+  "signature_v2": true,
+  "certificate_sha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+  "native_source_commit": "b79d84b1353d64766ea06c4045bc44f1b1682121",
+  "signing": "generated Android debug test certificate; NOT production/EAS",
+  "device_test": "not run; no adb device"
+}

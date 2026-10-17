@@ -30,14 +30,14 @@ pnpm mock:sse                 # 可选：合成 HTTP SSE 服务；Ctrl-C停止
 - `packages/rp-provider`：Provider能力与流式事件类型；`provider-openai-compat`：独立网络适配器。
 - `packages/storage-contracts`：存储端口；`test-fixtures`：原创合成数据；`rp-card-codecs`：有界 JSON/PNG 数据读取。
 
-[完整设计原文](docs/design/source-v1.0.md) · [Gate 0计划](docs/GATE0_PLAN.md) · [路线图与Issues](docs/ROADMAP.md) · [架构](docs/ARCHITECTURE.md) · [最新验证记录](docs/validation/gate0-followup.md) · [贡献规范](CONTRIBUTING.md)
+[完整设计原文](docs/design/source-v1.0.md) · [Gate 0计划](docs/GATE0_PLAN.md) · [路线图与Issues](docs/ROADMAP.md) · [架构](docs/ARCHITECTURE.md) · [最新验证记录](docs/validation/gate0-published-environment.md) · [贡献规范](CONTRIBUTING.md)
 
 GitHub任务规格在 `.github/planning.json`。`pnpm planning:publish --dry-run` 预览；GitHub API权限和网络可用后，`pnpm planning:publish` 幂等创建里程碑和Issues，保留已有任务编辑与关闭状态。发布后收据在 `artifacts/planning-published.json`。该命令会写GitHub，不属于安装步骤。
 
 ## Android APK
 
-[构建与真机验收](docs/ANDROID_BUILD.md)说明 EAS 绑定、凭据、APK profile、设备记录与回滚。preview 明确生成 APK，production 生成 AAB。当前没有 Expo project ID、签名或EXPO_TOKEN，不能把配置文件/JS bundle当作构建完成。
+[构建与真机验收](docs/ANDROID_BUILD.md)说明 EAS 绑定、凭据、APK profile、设备记录与回滚。preview 明确生成 APK，production 生成 AAB。本地 ARM64 Release-mode 测试 APK 已编译并通过签名/ABI/内置 Hermes/ZIP/16KiB对齐检查；使用 DEBUG 测试证书，尚未真机验收。Expo 令牌已配置但服务端认证失败，EAS 项目/正式签名/云构建仍待完成。
 
 当前安全扫描存在未修复的上游high公告，合并门槛保持失败，详见验证记录。没有密钥或真实聊天数据写入仓库。不要将Key放入EXPO_PUBLIC变量、应用打包配置、日志或备份。
 
-本次后续已补[卡片兼容证据](docs/CARD_COMPATIBILITY.md)及[本地Android构建恢复](docs/LOCAL_ANDROID.md)。验证壳的“网络与卡片”入口使用expo/fetch与本地文件选择；83项host测试通过，真实CCv3 PNG读取/提取JSON往返已实测。原生ARM64构建仍被repo.reactnative.dev的代理403阻塞，未生成APK，未验证HONOR90Pro。
+已补[卡片兼容证据](docs/CARD_COMPATIBILITY.md)、[本地Android构建](docs/LOCAL_ANDROID.md)及[HONOR90Pro验收步骤](docs/HONOR90PRO_ACCEPTANCE.md)。83项host测试通过，真实CCv3 PNG读取/提取JSON往返已实测；真机网络/取消/分页/卡片/性能仍待验证。5个里程碑、20个Issues及[草稿PR #21](https://github.com/Remote-yet-Candid/Mobile-ai-rp/pull/21)已创建，Gate0继续保持开放。

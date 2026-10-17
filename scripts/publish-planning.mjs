@@ -20,13 +20,18 @@ if (process.argv.includes('--dry-run')) {
   function api(path, payload) {
     const args = ['api', path];
     if (payload) args.push('--method', 'POST', '--input', '-');
-    else args.push('--paginate', '--slurp');
+    // JSON Lines works with older gh versions that lack --slurp, across all pages.
+    else args.push('--paginate', '--jq', '.[] | tojson');
     const result = execFileSync('gh', args, {
       encoding: 'utf8',
       ...(payload ? { input: JSON.stringify(payload) } : {}),
     });
-    const value = JSON.parse(result);
-    return payload ? value : value.flat();
+    return payload
+      ? JSON.parse(result)
+      : result
+          .split('\n')
+          .filter(Boolean)
+          .map((line) => JSON.parse(line));
   }
   // Read both collections before the first write; never use token values in arguments.
   const prefix = `repos/${plan.repository}`;

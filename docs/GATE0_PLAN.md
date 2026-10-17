@@ -33,8 +33,8 @@
 
 ## 外部前置与下一步
 
-GitHub API被代理403拒绝，已保存api.github.com网络补充草稿；需要环境设置保存生效，之后运行planning publisher创建任务，并创建draft PR。Git读权限不等于API/写权限，按实际命令记录。
+GitHub API与官方React Native AAR域名在环境发布后已生效。5里程碑、20Issues已创建并复测去重；[草稿PR #21](https://github.com/Remote-yet-Candid/Mobile-ai-rp/pull/21)保持待审阅。CI安装/check/Android导出通过，audit仍因上游high失败，不自动合并。
 
-Expo账户凭据未配置、无EAS project ID/签名，也无连接Android真机。本阶段不索要聊天中的密钥；未来通过安全环境设置配置，先做不依赖这些条件的工作。当前上游high漏洞跟踪G0-07，保留CI合并阻塞。
+Expo令牌已配置但whoami返回bearer token invalid；需通过安全设置替换有效EXPO_TOKEN后再绑定项目/签名并运行EAS。不能在聊天贴令牌。本地ARM64构建不依赖Expo账户，已恢复。作者目标设备HONOR90Pro尚未连接，系统版本与所有真机出口仍待验收。
 
-后续执行已完成host实物CCv3数据读取与native网络/文件验证入口，SDK/JDK17匹配问题已修正；本地原生构建又定位到repo.reactnative.dev AAR跳转403。最新进展/待办见validation/gate0-followup.md，Gate0仍不勾选真机出口。
+最新执行证据见[发布后验证报告](validation/gate0-published-environment.md)；旧403与JDK修复历史保留在早期报告，不能作为当前阻塞依据。host实物CCv3读取与native网络/文件入口已完成，但不代表真机通过。G0-07依赖漏洞仍保持合并阻塞，先完成Gate0再扩展Gate1–3。
