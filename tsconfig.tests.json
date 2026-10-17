@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "composite": false,
+    "allowJs": true,
+    "types": ["node"],
+    "resolveJsonModule": true,
+    "lib": ["ESNext", "DOM", "DOM.Iterable"]
+  },
+  "include": ["packages/**/*.test.ts", "scripts/**/*.test.ts", "tests/**/*.test.ts"],
+  "exclude": ["node_modules", "**/dist"]
+}

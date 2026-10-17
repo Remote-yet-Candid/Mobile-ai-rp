@@ -1,0 +1,20 @@
+{
+  "name": "@mobile-ai-rp/provider-openai-compat",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "react-native": "./src/index.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@mobile-ai-rp/rp-provider": "workspace:*"
+  },
+  "license": "Apache-2.0"
+}

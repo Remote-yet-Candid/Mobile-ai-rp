@@ -1,0 +1,19 @@
+{
+  "expo": {
+    "name": "Mobile AI RP · Gate 0",
+    "slug": "mobile-ai-rp",
+    "version": "0.0.1",
+    "scheme": "mobile-ai-rp",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "platforms": ["android"],
+    "android": {
+      "package": "dev.mobileairp.gate0",
+      "versionCode": 1
+    },
+    "plugins": ["expo-router", "expo-sqlite", "expo-secure-store"],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

@@ -1,0 +1,147 @@
+{
+  "repository": "Remote-yet-Candid/Mobile-ai-rp",
+  "milestones": [
+    {
+      "title": "Gate 0 — 技术风险证明",
+      "description": "最小 APK、流式与取消、1000 消息 SQLite/FlashList、真实 CCv3 卡；真机退出条件全部满足才进入 Gate 1。"
+    },
+    {
+      "title": "Gate 1 — v0.1 内测",
+      "description": "Android offline-first / BYOK 单角色聊天、兼容导入导出、最小 Inspector、安全存储、恢复与基础可访问性。"
+    },
+    {
+      "title": "Gate 2 — v0.2 RP 专业版",
+      "description": "世界书子集、分支隔离、可溯源事实事件、FTS 中文评估、CHARX/JSONL 迁移。"
+    },
+    {
+      "title": "Gate 3 — 评估与公开测试",
+      "description": "RP-Consistency 对照实验、设备性能基线、安全回归、可回退 Alpha/Beta APK。"
+    },
+    {
+      "title": "Backlog — v0.3+ 按反馈决策",
+      "description": "Provider 扩展、多角色、可选向量、跨平台、受限插件、本地推理和多模态；不作为首发前置。"
+    }
+  ],
+  "issues": [
+    {
+      "key": "G0-01",
+      "title": "[G0-01] chore: workspace skeleton + CI",
+      "milestone": "Gate 0 — 技术风险证明",
+      "body": "<!-- plan:G0-01 -->\n设计依据：docs/design/source-v1.0.md；详见 docs/GATE0_PLAN.md 和 docs/ROADMAP.md。\n\n## 范围\n建立 pnpm、TS references、lint/format/test、核心边界检测、CI、贡献与许可文档。\n\n## 非范围\n不做正式聊天、世界书或记忆。\n\n## 公开接口 / 数据契约\n私有 workspace exports；不承诺稳定公共 API。\n\n## 测试与构建\npnpm install --frozen-lockfile; pnpm check\n\n## 验收任务\n- [ ] 锁文件可复现；核心边界负例能失败；CI 定义完成且实际远端结果单独记录。\n- [ ] 将命令、环境版本、通过/失败/跳过/未运行结果和下一步写入 docs/validation/。\n- [ ] 通过独立分支和可审阅 PR，CI 结果与真机结果分别记录；人工审阅后合并。\n\n## 迁移风险\n所有接口目前为实验性0.x；涉及存储/格式/公共API必须记录版本迁移、失败保留与回滚，不得静默重置用户数据。\n"
+    },
+    {
+      "key": "G0-02",
+      "title": "[G0-02] feat(core): typed domain and injected prompt contracts",
+      "milestone": "Gate 0 — 技术风险证明",
+      "body": "<!-- plan:G0-02 -->\n设计依据：docs/design/source-v1.0.md；详见 docs/GATE0_PLAN.md 和 docs/ROADMAP.md。\n\n## 范围\n定义 Provider/Core 边界并验证固定快照、注入 token meter、显式预算失败；为角色/消息/不可变版本契约准备 ADR。\n\n## 非范围\n不提前完成分支图、Lorebook、摘要或长期记忆。\n\n## 公开接口 / 数据契约\nRPMessage/RPRequest/RPProvider/TokenMeter；实验性未发布。\n\n## 测试与构建\npnpm test; pnpm boundaries\n\n## 验收任务\n- [ ] Node 可独立运行，核心无 RN/Expo/SQLite/fetch/时间/随机数依赖；估算有警告；超预算不静默截断。\n- [ ] 将命令、环境版本、通过/失败/跳过/未运行结果和下一步写入 docs/validation/。\n- [ ] 通过独立分支和可审阅 PR，CI 结果与真机结果分别记录；人工审阅后合并。\n\n## 迁移风险\n所有接口目前为实验性0.x；涉及存储/格式/公共API必须记录版本迁移、失败保留与回滚，不得静默重置用户数据。\n"
+    },
+    {
+      "key": "G0-03",
+      "title": "[G0-03] feat(provider): OpenAI-compatible streaming transport spike",
+      "milestone": "Gate 0 — 技术风险证明",
+      "body": "<!-- plan:G0-03 -->\n设计依据：docs/design/source-v1.0.md；详见 docs/GATE0_PLAN.md 和 docs/ROADMAP.md。\n\n## 范围\n独立适配器、SSE 增量解析、取消、超时、错误分类、可注入传输和模拟 HTTP 服务。\n\n## 非范围\n不承诺任意网关、工具调用、自动重连或 developer role 兼容。\n\n## 公开接口 / 数据契约\nRPProvider 和安全 StreamEvent。\n\n## 测试与构建\npnpm test; pnpm mock:sse\n\n## 验收任务\n- [ ] UTF-8 跨字节、CR/LF、multi-data、DONE、断流、401/429/5xx、取消和超时合同通过；真机 expo/fetch HTTP 流另行验收。\n- [ ] 将命令、环境版本、通过/失败/跳过/未运行结果和下一步写入 docs/validation/。\n- [ ] 通过独立分支和可审阅 PR，CI 结果与真机结果分别记录；人工审阅后合并。\n\n## 迁移风险\n所有接口目前为实验性0.x；涉及存储/格式/公共API必须记录版本迁移、失败保留与回滚，不得静默重置用户数据。\n"
+    },
+    {
+      "key": "G0-04",
+      "title": "[G0-04] feat(mobile): Expo lab with SQLite and FlashList 1000-message probe",
+      "milestone": "Gate 0 — 技术风险证明",
+      "body": "<!-- plan:G0-04 -->\n设计依据：docs/design/source-v1.0.md；详见 docs/GATE0_PLAN.md 和 docs/ROADMAP.md。\n\n## 范围\nExpo Router、New Architecture、FlashList v2、1000 合成消息、50 条 keyset 分页、持久化与模拟流取消页面。\n\n## 非范围\n不是正式产品导航、Markdown、角色编辑器或生产数据库。\n\n## 公开接口 / 数据契约\nProbeMessageStore；探针数据库与未来生产 schema 隔离。\n\n## 测试与构建\npnpm check; pnpm export:android\n\n## 验收任务\n- [ ] Android bundle 可生成；release APK 真机打开/滚动/关闭重开/取消的设备和日志齐备；host SQL 测试不得替代 native 验证。\n- [ ] 将命令、环境版本、通过/失败/跳过/未运行结果和下一步写入 docs/validation/。\n- [ ] 通过独立分支和可审阅 PR，CI 结果与真机结果分别记录；人工审阅后合并。\n\n## 迁移风险\n所有接口目前为实验性0.x；涉及存储/格式/公共API必须记录版本迁移、失败保留与回滚，不得静默重置用户数据。\n"
+    },
+    {
+      "key": "G0-05",
+      "title": "[G0-05] feat(codecs): real CCv3 JSON and PNG feasibility",
+      "milestone": "Gate 0 — 技术风险证明",
+      "body": "<!-- plan:G0-05 -->\n设计依据：docs/design/source-v1.0.md；详见 docs/GATE0_PLAN.md 和 docs/ROADMAP.md。\n\n## 范围\n依据规范读取一张许可清晰的真实 CCv3 PNG/JSON，保留未知字段，记录 provenance/hash/导入报告。\n\n## 非范围\n不以自制 fixture 冒充真实卡；不宣称全部 V2/V3/CHARX 行为兼容。\n\n## 公开接口 / 数据契约\nrp-card-codecs 的 read 与 round-trip 等级分开记录。\n\n## 测试与构建\npnpm test; 卡片字段对照与哈希报告\n\n## 验收任务\n- [ ] 真实 CCv3 JSON/PNG 可读；PNG ccv3/chara 双 metadata V3 优先；大小/编码异常有可读失败。\n- [ ] 将命令、环境版本、通过/失败/跳过/未运行结果和下一步写入 docs/validation/。\n- [ ] 通过独立分支和可审阅 PR，CI 结果与真机结果分别记录；人工审阅后合并。\n\n## 迁移风险\n所有接口目前为实验性0.x；涉及存储/格式/公共API必须记录版本迁移、失败保留与回滚，不得静默重置用户数据。\n"
+    },
+    {
+      "key": "G0-06",
+      "title": "[G0-06] ci(release): EAS preview APK and real Android Gate 0 acceptance",
+      "milestone": "Gate 0 — 技术风险证明",
+      "body": "<!-- plan:G0-06 -->\n设计依据：docs/design/source-v1.0.md；详见 docs/GATE0_PLAN.md 和 docs/ROADMAP.md。\n\n## 范围\n手动 EAS preview、项目绑定和签名前置检查、独立 APK 安装、设备/构建/性能证据。\n\n## 非范围\n不在 PR fork 中注入凭据；不把 JS bundle 称为 APK。\n\n## 公开接口 / 数据契约\napps/mobile/eas.json；实验 Android package ID 最终发布前复核。\n\n## 测试与构建\npnpm export:android; eas build --platform android --profile preview --non-interactive\n\n## 验收任务\n- [ ] 真实 APK 独立启动；网络模拟/真实流可收到并取消；1000 消息不卡死；真实卡可读；上传构建报告。失败则评估 RN/Kotlin，不进入 Gate 1。\n- [ ] 将命令、环境版本、通过/失败/跳过/未运行结果和下一步写入 docs/validation/。\n- [ ] 通过独立分支和可审阅 PR，CI 结果与真机结果分别记录；人工审阅后合并。\n\n## 迁移风险\n所有接口目前为实验性0.x；涉及存储/格式/公共API必须记录版本迁移、失败保留与回滚，不得静默重置用户数据。\n"
+    },
+    {
+      "key": "G0-07",
+      "title": "[G0-07] security: unblock upstream node-forge and braces high advisories",
+      "milestone": "Gate 0 — 技术风险证明",
+      "body": "<!-- plan:G0-07 -->\n## 范围\n跟踪 GHSA-86w9-cpqp-85rv (node-forge <=1.4.0) 和 GHSA-vfj7-8cjw-p6xm (braces <=3.0.3)。升级可信修复版本或经评审验证替代依赖链，再重跑安全和构建测试。\n## 非范围\n不关闭audit，不任意修改checksum，不直接替换为未验证fork，不将未修复的扫描称为通过。\n## 接口与迁移风险\n当前来自Expo CLI/Metro工具依赖；native业务代码不直接调用。工具链变化需SDK兼容和完整bundle回归。\n## 验收任务\n- [ ] pnpm audit --audit-level high --prod 退出0。\n- [ ] pnpm check 和 pnpm export:android 通过；依赖变更解释与锁文件可复现。\n- [ ] 记录上游公告、修复版本和供应链审核依据；人工审阅PR。\n## 测试记录\n初测：2个high公告，无已发布修复版本；详见 docs/validation/gate0-foundation.md。\n"
+    },
+    {
+      "key": "G1-01",
+      "title": "[G1-01] feat(mobile): single-character RP workflow and immutable message versions",
+      "milestone": "Gate 1 — v0.1 内测",
+      "body": "<!-- plan:G1-01 -->\n设计依据：docs/design/source-v1.0.md；详见 docs/GATE0_PLAN.md 和 docs/ROADMAP.md。\n\n## 范围\n会话/角色/设置导航、创建角色、连接测试、30 轮流式对话、停止/错误/重试、复制编辑重生成/候选回复、时间状态、搜索分页。\n\n## 非范围\n不做群聊、商店、同步、自建后端；完整 DAG/记忆延至 Gate 2。\n\n## 公开接口 / 数据契约\n角色修订快照、conversation/message generation 状态与活动回复契约。\n\n## 测试与构建\npnpm check; 两种不同 OpenAI-compatible 后端 smoke; Android 操作清单\n\n## 验收任务\n- [ ] 同一角色 30 轮对话与候选切换；编辑/重生成不覆盖原节点；键盘、字体、暗色、长按和屏幕阅读器基本可用。\n- [ ] 将命令、环境版本、通过/失败/跳过/未运行结果和下一步写入 docs/validation/。\n- [ ] 通过独立分支和可审阅 PR，CI 结果与真机结果分别记录；人工审阅后合并。\n\n## 迁移风险\n所有接口目前为实验性0.x；涉及存储/格式/公共API必须记录版本迁移、失败保留与回滚，不得静默重置用户数据。\n"
+    },
+    {
+      "key": "G1-02",
+      "title": "[G1-02] feat(storage): production migrations, backup and interrupted-generation recovery",
+      "milestone": "Gate 1 — v0.1 内测",
+      "body": "<!-- plan:G1-02 -->\n设计依据：docs/design/source-v1.0.md；详见 docs/GATE0_PLAN.md 和 docs/ROADMAP.md。\n\n## 范围\n生产 SQLite schema、索引、asset 分离、WAL 生命周期、异常退出未完成消息状态、版本化迁移、完整无密钥导出还原和彻底删除。\n\n## 非范围\n不将探针表直接当成完整生产模型；不加云账号或同步。\n\n## 公开接口 / 数据契约\nstorage-contracts，versioned export schema 与迁移协议。\n\n## 测试与构建\npnpm test; 杀进程/断网/恢复20轮; 备份round-trip\n\n## 验收任务\n- [ ] 升级保留数据；20轮异常恢复无已保存消息丢失；schema不支持时保留原库并报错；导出不含Key。\n- [ ] 将命令、环境版本、通过/失败/跳过/未运行结果和下一步写入 docs/validation/。\n- [ ] 通过独立分支和可审阅 PR，CI 结果与真机结果分别记录；人工审阅后合并。\n\n## 迁移风险\n所有接口目前为实验性0.x；涉及存储/格式/公共API必须记录版本迁移、失败保留与回滚，不得静默重置用户数据。\n"
+    },
+    {
+      "key": "G1-03",
+      "title": "[G1-03] feat(codecs): CCv2/CCv3 JSON and PNG compatibility and safe import",
+      "milestone": "Gate 1 — v0.1 内测",
+      "body": "<!-- plan:G1-03 -->\n设计依据：docs/design/source-v1.0.md；详见 docs/GATE0_PLAN.md 和 docs/ROADMAP.md。\n\n## 范围\nJSON/PNG V2/V3、未知 extensions 保留、真实许可样本、大小限制、异常 PNG metadata 与导入报告。\n\n## 非范围\n不提前做 CHARX/JSONL；不执行HTML/JS或将creator_notes默认注入。\n\n## 公开接口 / 数据契约\n导入错误报告与字段支持矩阵。\n\n## 测试与构建\npnpm test; golden files; round-trip; 恶意/超大文件\n\n## 验收任务\n- [ ] 分别声明 Read/Render/Prompt/Behavior/Round-trip；无损字段有证据；未知字段可导出且不执行。\n- [ ] 将命令、环境版本、通过/失败/跳过/未运行结果和下一步写入 docs/validation/。\n- [ ] 通过独立分支和可审阅 PR，CI 结果与真机结果分别记录；人工审阅后合并。\n\n## 迁移风险\n所有接口目前为实验性0.x；涉及存储/格式/公共API必须记录版本迁移、失败保留与回滚，不得静默重置用户数据。\n"
+    },
+    {
+      "key": "G1-04",
+      "title": "[G1-04] feat(security): BYOK SecureStore and endpoint boundaries",
+      "milestone": "Gate 1 — v0.1 内测",
+      "body": "<!-- plan:G1-04 -->\n设计依据：docs/design/source-v1.0.md；详见 docs/GATE0_PLAN.md 和 docs/ROADMAP.md。\n\n## 范围\n多个Provider profile、Key只在SecureStore、HTTPS默认/显式局域网例外、日志脱敏、远程资源默认禁用。\n\n## 非范围\n不把Key放EXPO_PUBLIC、SQLite、备份、GitHub、日志或官方中转；不做任意插件执行。\n\n## 公开接口 / 数据契约\nApp凭据端口及profileID引用；core不接触Key。\n\n## 测试与构建\npnpm test; secret扫描; Android SecureStore检查\n\n## 验收任务\n- [ ] Key导出/日志零泄露，重定向不泄露认证；恶意卡无文件、网络或代码执行能力。\n- [ ] 将命令、环境版本、通过/失败/跳过/未运行结果和下一步写入 docs/validation/。\n- [ ] 通过独立分支和可审阅 PR，CI 结果与真机结果分别记录；人工审阅后合并。\n\n## 迁移风险\n所有接口目前为实验性0.x；涉及存储/格式/公共API必须记录版本迁移、失败保留与回滚，不得静默重置用户数据。\n"
+    },
+    {
+      "key": "G1-05",
+      "title": "[G1-05] feat(core): minimal Prompt Inspector and model-aware budgets",
+      "milestone": "Gate 1 — v0.1 内测",
+      "body": "<!-- plan:G1-05 -->\n设计依据：docs/design/source-v1.0.md；详见 docs/GATE0_PLAN.md 和 docs/ROADMAP.md。\n\n## 范围\n角色/Persona/系统硬约束/最近历史拼装、声明宏替换、预算/优先级/排除理由、请求预览默认不持久化。\n\n## 非范围\n不把字符数说成准确token；不自动运行卡扩展；高级Lorebook和记忆后续。\n\n## 公开接口 / 数据契约\nPromptPipeline/Trace/DecisionReport，能力不兼容显式提示。\n\n## 测试与构建\npnpm test; 黄金Prompt与预算测试; Inspector人工核对\n\n## 验收任务\n- [ ] creator_notes不默认入prompt；估算清晰警告；系统/最新内容优先；未兼容能力拒绝或说明变换。\n- [ ] 将命令、环境版本、通过/失败/跳过/未运行结果和下一步写入 docs/validation/。\n- [ ] 通过独立分支和可审阅 PR，CI 结果与真机结果分别记录；人工审阅后合并。\n\n## 迁移风险\n所有接口目前为实验性0.x；涉及存储/格式/公共API必须记录版本迁移、失败保留与回滚，不得静默重置用户数据。\n"
+    },
+    {
+      "key": "G2-01",
+      "title": "[G2-01] feat(lorebook): traceable first-stage rules and compatibility matrix",
+      "milestone": "Gate 2 — v0.2 RP 专业版",
+      "body": "<!-- plan:G2-01 -->\n设计依据：docs/design/source-v1.0.md；详见 docs/GATE0_PLAN.md 和 docs/ROADMAP.md。\n\n## 范围\n常量、范围、关键词/大小写、启用、扫描深度、优先级、预算、去重与激活理由。\n\n## 非范围\n递归/条件/正则/sticky/cooldown/概率/插入位置/脚本列为未支持或下一阶段。\n\n## 公开接口 / 数据契约\nLorebook engine 与规则版本化。\n\n## 测试与构建\npnpm test; SillyTavern对照golden\n\n## 验收任务\n- [ ] 逐条规则支持等级；同输入选择与优先级有对照；不得声称完全兼容。\n- [ ] 将命令、环境版本、通过/失败/跳过/未运行结果和下一步写入 docs/validation/。\n- [ ] 通过独立分支和可审阅 PR，CI 结果与真机结果分别记录；人工审阅后合并。\n\n## 迁移风险\n所有接口目前为实验性0.x；涉及存储/格式/公共API必须记录版本迁移、失败保留与回滚，不得静默重置用户数据。\n"
+    },
+    {
+      "key": "G2-02",
+      "title": "[G2-02] feat(branches): immutable DAG and branch-local memory isolation",
+      "milestone": "Gate 2 — v0.2 RP 专业版",
+      "body": "<!-- plan:G2-02 -->\n设计依据：docs/design/source-v1.0.md；详见 docs/GATE0_PLAN.md 和 docs/ROADMAP.md。\n\n## 范围\n不可变消息版本、兄弟重生成、活动路径、旧消息编辑、候选切换、删除、跨分支导出恢复。\n\n## 非范围\n不每次复制全部历史；不复用另一分支未来事实。\n\n## 公开接口 / 数据契约\nConversationBranch、active leaf、source node失效契约。\n\n## 测试与构建\npnpm test; 随机图与编辑/删除/重生成回归\n\n## 验收任务\n- [ ] 跨分支事实零串扰，1k/5k消息有基线，孤儿/循环处理明确。\n- [ ] 将命令、环境版本、通过/失败/跳过/未运行结果和下一步写入 docs/validation/。\n- [ ] 通过独立分支和可审阅 PR，CI 结果与真机结果分别记录；人工审阅后合并。\n\n## 迁移风险\n所有接口目前为实验性0.x；涉及存储/格式/公共API必须记录版本迁移、失败保留与回滚，不得静默重置用户数据。\n"
+    },
+    {
+      "key": "G2-03",
+      "title": "[G2-03] feat(memory): canon, observed, inferred and summary provenance",
+      "milestone": "Gate 2 — v0.2 RP 专业版",
+      "body": "<!-- plan:G2-03 -->\n设计依据：docs/design/source-v1.0.md；详见 docs/GATE0_PLAN.md 和 docs/ROADMAP.md。\n\n## 范围\n事实/事件/关系/阶段状态、来源回链、时间有效性、候选提取人工确认/拒绝/修正、冲突与失效。\n\n## 非范围\n不把猜测当canon；不每轮额外LLM总结；不摘要无限叠加；不依赖向量。\n\n## 公开接口 / 数据契约\n事实状态、时间与branch/source IDs、提取模型/输入哈希。\n\n## 测试与构建\npnpm test; 时间迁移、死亡/复活、平行分支golden\n\n## 验收任务\n- [ ] 来源可点击、可撤销；canon锁定；总结可重建；当前分支过滤发生在召回前。\n- [ ] 将命令、环境版本、通过/失败/跳过/未运行结果和下一步写入 docs/validation/。\n- [ ] 通过独立分支和可审阅 PR，CI 结果与真机结果分别记录；人工审阅后合并。\n\n## 迁移风险\n所有接口目前为实验性0.x；涉及存储/格式/公共API必须记录版本迁移、失败保留与回滚，不得静默重置用户数据。\n"
+    },
+    {
+      "key": "G2-04",
+      "title": "[G2-04] feat(search): local FTS and Chinese retrieval evaluation",
+      "milestone": "Gate 2 — v0.2 RP 专业版",
+      "body": "<!-- plan:G2-04 -->\n设计依据：docs/design/source-v1.0.md；详见 docs/GATE0_PLAN.md 和 docs/ROADMAP.md。\n\n## 范围\nFTS5、时间/角色过滤，unicode61/trigram短中文查询评估，必要时应用层ngram方案。\n\n## 非范围\n不把embedding设为首发前置或假定unicode61懂中文。\n\n## 公开接口 / 数据契约\n检索接口、查询报告和迁移索引。\n\n## 测试与构建\n1k/5k固定数据检索测试与中文样本报告\n\n## 验收任务\n- [ ] 公布短于三字符查询限制、召回和查询耗时；无向量服务仍可用。\n- [ ] 将命令、环境版本、通过/失败/跳过/未运行结果和下一步写入 docs/validation/。\n- [ ] 通过独立分支和可审阅 PR，CI 结果与真机结果分别记录；人工审阅后合并。\n\n## 迁移风险\n所有接口目前为实验性0.x；涉及存储/格式/公共API必须记录版本迁移、失败保留与回滚，不得静默重置用户数据。\n"
+    },
+    {
+      "key": "G2-05",
+      "title": "[G2-05] feat(migration): CHARX, SillyTavern JSONL and full Inspector",
+      "milestone": "Gate 2 — v0.2 RP 专业版",
+      "body": "<!-- plan:G2-05 -->\n设计依据：docs/design/source-v1.0.md；详见 docs/GATE0_PLAN.md 和 docs/ROADMAP.md。\n\n## 范围\nCHARX资产、JSONL swipe/metadata、世界书/Persona/选择性正则迁移；完整Inspector显示来源、激活、预算与请求摘要。\n\n## 非范围\n不执行任意JS；不以格式能读代替行为一致。\n\n## 公开接口 / 数据契约\n版本化迁移报告、未知字段round-trip、资源白名单。\n\n## 测试与构建\npnpm test; Zip Slip/Bomb、路径/大小、CJK多模态golden\n\n## 验收任务\n- [ ] 损失字段明确报告；兼容等级逐项；用户选择诊断导出，Prompt默认不落盘。\n- [ ] 将命令、环境版本、通过/失败/跳过/未运行结果和下一步写入 docs/validation/。\n- [ ] 通过独立分支和可审阅 PR，CI 结果与真机结果分别记录；人工审阅后合并。\n\n## 迁移风险\n所有接口目前为实验性0.x；涉及存储/格式/公共API必须记录版本迁移、失败保留与回滚，不得静默重置用户数据。\n"
+    },
+    {
+      "key": "G3-01",
+      "title": "[G3-01] test(eval): RP-Consistency reproducible model comparisons",
+      "milestone": "Gate 3 — 评估与公开测试",
+      "body": "<!-- plan:G3-01 -->\n设计依据：docs/design/source-v1.0.md；详见 docs/GATE0_PLAN.md 和 docs/ROADMAP.md。\n\n## 范围\n自研50–100故事样本和100/500/1000消息场景，A最近/B摘要/C关键词/D事实过滤/E未来语义对照。\n\n## 非范围\n不预设D/E胜出；不冒称社区标准或无限记忆。\n\n## 公开接口 / 数据契约\n版本化评估输入/输出/来源和指标报告。\n\n## 测试与构建\n固定底模参数token预算；人工盲评抽查；脚本复现\n\n## 验收任务\n- [ ] 正确/矛盾/引用准确率、延迟/token/成本、置信区间与失败样例齐备；公开LongMemEval/LoCoMo使用范围和许可。\n- [ ] 将命令、环境版本、通过/失败/跳过/未运行结果和下一步写入 docs/validation/。\n- [ ] 通过独立分支和可审阅 PR，CI 结果与真机结果分别记录；人工审阅后合并。\n\n## 迁移风险\n所有接口目前为实验性0.x；涉及存储/格式/公共API必须记录版本迁移、失败保留与回滚，不得静默重置用户数据。\n"
+    },
+    {
+      "key": "G3-02",
+      "title": "[G3-02] release: performance, security and public Alpha/Beta",
+      "milestone": "Gate 3 — 评估与公开测试",
+      "body": "<!-- plan:G3-02 -->\n设计依据：docs/design/source-v1.0.md；详见 docs/GATE0_PLAN.md 和 docs/ROADMAP.md。\n\n## 范围\n固定release设备100/1k/5k/10k混合长文本/图片基准、兼容/安全回归、隐私贡献文档、可回退APK和反馈。\n\n## 非范围\n无法统一竞品条件只做自身回归；不声称性能领先。\n\n## 公开接口 / 数据契约\n版本号、发布/回滚说明、已知限制。\n\n## 测试与构建\npnpm check; dependency扫描; 真机人工矩阵; 20次冷热启动分开\n\n## 验收任务\n- [ ] 发布硬件/P95/FPS/内存/DB指标和失败例子；APK日志/链接/回滚完整；再决策v0.3。\n- [ ] 将命令、环境版本、通过/失败/跳过/未运行结果和下一步写入 docs/validation/。\n- [ ] 通过独立分支和可审阅 PR，CI 结果与真机结果分别记录；人工审阅后合并。\n\n## 迁移风险\n所有接口目前为实验性0.x；涉及存储/格式/公共API必须记录版本迁移、失败保留与回滚，不得静默重置用户数据。\n"
+    },
+    {
+      "key": "P2-01",
+      "title": "[P2-01] research: optional providers, group RP, plugins and cross-platform roadmap",
+      "milestone": "Backlog — v0.3+ 按反馈决策",
+      "body": "<!-- plan:P2-01 -->\n设计依据：docs/design/source-v1.0.md；详见 docs/GATE0_PLAN.md 和 docs/ROADMAP.md。\n\n## 范围\n按反馈逐项研究Anthropic/Gemini/OpenRouter/补全文本/缓存/推理约束、多角色、可选向量与事实图、Web/Desktop、权限沙箱插件、语音/图像/VN及独立GGUF native模块。\n\n## 非范围\n不捆绑所有用户承担本地模型复杂性；不实现任意JS插件或首发账号服务器。\n\n## 公开接口 / 数据契约\n每个子方向另设ADR、威胁模型、预算与验收Issue。\n\n## 测试与构建\n后续独立可复现spike与平台测试\n\n## 验收任务\n- [ ] Gate0–3证据和用户反馈充分再逐项批准；保留原设计所有P2目标。\n- [ ] 将命令、环境版本、通过/失败/跳过/未运行结果和下一步写入 docs/validation/。\n- [ ] 通过独立分支和可审阅 PR，CI 结果与真机结果分别记录；人工审阅后合并。\n\n## 迁移风险\n所有接口目前为实验性0.x；涉及存储/格式/公共API必须记录版本迁移、失败保留与回滚，不得静默重置用户数据。\n"
+    }
+  ]
+}

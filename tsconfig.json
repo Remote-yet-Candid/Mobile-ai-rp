@@ -1,0 +1,23 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "packages/rp-provider"
+    },
+    {
+      "path": "packages/rp-core"
+    },
+    {
+      "path": "packages/storage-contracts"
+    },
+    {
+      "path": "packages/test-fixtures"
+    },
+    {
+      "path": "packages/provider-openai-compat"
+    },
+    {
+      "path": "packages/rp-card-codecs"
+    }
+  ]
+}

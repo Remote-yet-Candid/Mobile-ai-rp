@@ -1,0 +1,25 @@
+{
+  "cli": {
+    "version": ">=25.1.1",
+    "appVersionSource": "local"
+  },
+  "build": {
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "extends": "base"
+    },
+    "production": {
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "extends": "base"
+    },
+    "base": {
+      "node": "24.19.0",
+      "pnpm": "11.25.0"
+    }
+  }
+}
