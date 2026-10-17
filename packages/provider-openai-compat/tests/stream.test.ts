@@ -230,4 +230,12 @@ describe('OpenAI-compatible public subset', () => {
   ])('rejects unsafe endpoint %s', (baseUrl) => {
     expect(() => new OpenAICompatibleProvider({ baseUrl, fetch })).toThrow();
   });
+  it.each(['http://example.com/v1', 'http://127.0.0.1.example.com/v1'])(
+    'keeps remote cleartext blocked when the ADB loopback option is enabled: %s',
+    (baseUrl) => {
+      expect(
+        () => new OpenAICompatibleProvider({ baseUrl, fetch, allowInsecureLoopback: true }),
+      ).toThrow();
+    },
+  );
 });

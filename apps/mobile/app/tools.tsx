@@ -4,6 +4,7 @@ import {
   Platform,
   Pressable,
   ScrollView,
+  Share,
   StyleSheet,
   Text,
   TextInput,
@@ -13,7 +14,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link } from 'expo-router';
 import { prepareRequest } from '@mobile-ai-rp/rp-core';
 import { CardImportError } from '@mobile-ai-rp/rp-card-codecs';
-import { createNativeNetworkProbe } from '../src/infra/provider';
+import { createNativeAdbProbe, createNativeNetworkProbe } from '../src/infra/provider';
+import { runNetworkAcceptance } from '../src/infra/network-acceptance';
 import { pickProbeCard } from '../src/infra/card-import';
 
 export default function GateZeroTools() {
@@ -28,6 +30,7 @@ export default function GateZeroTools() {
   const [networkStatus, setNetworkStatus] = useState('未运行；不发送密钥或真实聊天');
   const [cardStatus, setCardStatus] = useState('未选择卡片；不会加载图片、外链或执行卡片脚本');
   const [output, setOutput] = useState('');
+  const [adbReport, setAdbReport] = useState('');
   useEffect(() => {
     mounted.current = true;
     return () => {
@@ -83,6 +86,36 @@ export default function GateZeroTools() {
     controller.current?.abort();
     setRunning(false);
     setNetworkStatus('已取消；不再累加后续片段');
+  }
+  async function runAdbProbe() {
+    const active = new AbortController();
+    controller.current?.abort();
+    controller.current = active;
+    setRunning(true);
+    setAdbReport('');
+    setNetworkStatus('正在运行 ADB 网络验收…');
+    try {
+      const result = await runNetworkAcceptance(createNativeAdbProbe(), active.signal);
+      if (!mounted.current || active.signal.aborted) return;
+      const report = {
+        probe: 'gate0-adb-network-v1',
+        platform: Platform.OS,
+        systemVersion: Platform.Version,
+        ...result,
+      };
+      setAdbReport(JSON.stringify(report, null, 2));
+      setNetworkStatus(
+        Object.values(result).every(Boolean) ? 'ADB 网络验收通过' : 'ADB 网络验收失败',
+      );
+    } catch {
+      if (mounted.current && !active.signal.aborted)
+        setNetworkStatus('ADB 验收未完成；检查模拟服务与 adb reverse');
+    } finally {
+      if (controller.current === active) {
+        controller.current = null;
+        if (mounted.current) setRunning(false);
+      }
+    }
   }
   async function importCard() {
     if (importing) return;
@@ -153,6 +186,22 @@ export default function GateZeroTools() {
           <Text selectable style={{ color: foreground }}>
             {output || '尚无网络片段'}
           </Text>
+          <Text style={{ color: foreground }}>
+            开发者 ADB 验收：先启动 pnpm mock:sse，再执行 adb reverse tcp:8787 tcp:8787。 仅向本机
+            127.0.0.1 发送合成数据，依次验证收流、首片段取消、重新请求。
+          </Text>
+          {button('运行 ADB 网络验收', () => void runAdbProbe(), running)}
+          <Text selectable style={{ color: foreground }}>
+            {adbReport}
+          </Text>
+          {button(
+            '分享网络验收报告',
+            () =>
+              void Share.share({ message: adbReport }).catch(() =>
+                setNetworkStatus('无法分享验收报告'),
+              ),
+            !adbReport,
+          )}
           <Text accessibilityRole="header" style={[styles.title, { color: foreground }]}>
             卡片 JSON / PNG
           </Text>
