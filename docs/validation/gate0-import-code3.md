@@ -36,7 +36,7 @@
 
 ## 新版 APK 交付完成
 
-[手机 Draft Release 下载页](https://github.com/Remote-yet-Candid/Mobile-ai-rp/releases/tag/untagged-d4834efff8e316f8edb3)，需登录有仓库写权限的账号。仓库本身为 public，附件保持未发布草稿访问范围，不描述为私有仓库或公开正式版本。
+[手机 Draft Release 下载页](https://github.com/Remote-yet-Candid/Mobile-ai-rp/releases/tag/untagged-12df5971d7ecc57cee47)，需登录有仓库写权限的账号。仓库本身为 public，附件保持未发布草稿访问范围，不描述为私有仓库或公开正式版本。
 
 - 文件：`mobile-ai-rp-gate0-0.0.3-arm64.apk`；34,291,329 bytes，ARM64 only，package `dev.mobileairp.gate0`。
 - SHA256：`5982b5f1b1effdc031fef51135d8af30941aff9905347faa6e7c82e433bfa3de`。
@@ -45,6 +45,7 @@
 - Release ID 415812145；APK asset 650524051，SHA256 asset 650522186。只保留这两个附件，未把 APK/分片提交 Git。
 - [Actions 39036161585](https://github.com/Remote-yet-Candid/Mobile-ai-rp/actions/runs/39036161585) 成功合并原文件、上传、下载校验并删除临时分片。当前云环境另行下载，确认大小、SHA256、校验文件内容和签名均通过。一次元数据 API 503 经有限重试恢复，不是待用户处理的权限阻塞。
 - 原 APK 与作者 JSON 相互独立；作者上传内容没有打入应用或 Release。
+- GitHub 保存草稿元数据后可能重分配未发布标签和页面地址；交付流程以固定 Release ID、源码提交和文件摘要限制目标，上传时读取当前标签，不把临时标签当成永久身份。最终手机链接已按保存后的 API 结果更新。
 
 code3 的手机覆盖安装、大卡读取和交互表现仍未运行，不能由此交付记录标记通过。
 

@@ -37,7 +37,6 @@ jobs:
           repo = 'Remote-yet-Candid/Mobile-ai-rp'
           release_id = 415812145
           endpoint = f'repos/{repo}/releases/{release_id}'
-          tag = 'gate0-android-0.0.3-code3'
           source_commit = 'd5d22b3460900d25a5a5bae60a93414c9d836c75'
           name = 'mobile-ai-rp-gate0-0.0.3-arm64.apk'
           size = 34291329
@@ -52,7 +51,7 @@ jobs:
 
           def release():
               data = json.loads(subprocess.check_output(['gh', 'api', endpoint]))
-              if (not data['draft'] or data['tag_name'] != tag
+              if (data['id'] != release_id or not data['draft']
                       or data['target_commitish'] != source_commit):
                   raise RuntimeError('Only the designated unpublished draft is permitted')
               return data
@@ -87,9 +86,9 @@ jobs:
                           output.write(path.read_bytes())
                   if apk.stat().st_size != size or digest(apk) != expected:
                       raise RuntimeError('Reassembled APK does not match verified original')
-                  release()
+                  current = release()
                   subprocess.run([
-                      'gh', 'release', 'upload', tag, str(apk), '--repo', repo,
+                      'gh', 'release', 'upload', current['tag_name'], str(apk), '--repo', repo,
                   ], check=True)
 
               data = release()
