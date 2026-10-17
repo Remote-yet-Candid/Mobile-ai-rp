@@ -28,7 +28,14 @@
 
 首轮 Actions 在草稿身份校验处停止：GitHub 实际分配 `untagged-2a68d6ad11c8319d0221`，不是创建时请求的版本标签。没有执行 APK 上传或发布。流程改为核对实际标签、固定 Release ID 和源码提交后重试。
 
-当前：5 个分片及校验文件已上传；修正后 Actions 实际执行和最终 APK 交付仍待核验。草稿本身不等于 APK 已交付。
+最终：2026-10-17，[Actions run 39033624656](https://github.com/Remote-yet-Candid/Mobile-ai-rp/actions/runs/39033624656) 成功。完整 APK 和 SHA256 已交付；5 个临时分片已删除。Release API 确认仍为 `draft: true`，只保留以下附件：
+
+| 附件                                | GitHub asset ID | 字节数     |
+| ----------------------------------- | --------------- | ---------- |
+| mobile-ai-rp-gate0-arm64.apk        | 650442519       | 34,286,401 |
+| mobile-ai-rp-gate0-arm64.apk.sha256 | 650426057       | 95         |
+
+Actions 合并后核对原 APK SHA256，上传后再次下载 APK 与校验文件验证通过。当前云环境独立通过 GitHub asset API 下载到忽略目录 `artifacts/delivery-roundtrip/`，确认大小、SHA256、校验文件字节均与原件一致；对下载副本的 APK v2 签名验证也通过。交付没有改写原件。
 
 ## 本轮检查
 
@@ -37,4 +44,6 @@
 - `pnpm export:android`：通过，1409 modules，生成 Hermes Android bundle。
 - `pnpm audit --audit-level high --prod`：失败，2 high / 1 moderate；node-forge、braces 上游 high 尚无补丁。保留合并阻塞，不扩大本轮范围修复依赖。
 
-下一步：核验 Actions 交付结果，提供手机浏览器入口；由作者完成安装、独立启动、1000 条消息分页及重开持久化的基础真机验收。真实网络/取消、性能及其他 Gate 0 出口仍需单独证据，不能由文件交付代替。
+工作流和此记录通过 `feat/gate0-foundation` 分支及既有 Draft PR #21 管理，未合并到 main。没有修改应用功能或 Expo 配置。
+
+下一步：作者登录自己的 GitHub 账号，用手机打开上述 Draft Release，从 Assets 下载 `.apk`，完成安装、独立启动、1000 条消息分页及重开持久化的基础真机验收。真实网络/取消、性能及其他 Gate 0 出口仍需单独证据，不能由文件交付代替。当前没有待用户配置的上传阻碍。
