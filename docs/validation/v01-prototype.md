@@ -14,18 +14,27 @@
 
 环境：Node 24.19.0、pnpm 11.25.0、TypeScript 6.0.3、Expo 58、JDK 17.0.20.1；SDK/Gradle 使用现有本地工具链，不依赖 Expo Token。
 
-| 命令                                          | 结果                                                                                                   |
-| --------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `pnpm install --frozen-lockfile`              | 通过，8 workspace；新增唯一运行依赖为 SDK 对齐的 MIT expo-crypto 58.0.7，用于随机 ID                   |
-| `pnpm check`                                  | 通过，13 文件 / 158 测试；含格式、lint、敏感文件、边界负例、TypeScript                                 |
-| `pnpm export:android`                         | 通过，Hermes bundle 3.3MB；首次因 NodeNext `.js` 指向 TS 源解析失败，增加 Metro 正常优先的源解析后通过 |
-| `pnpm audit --audit-level high --prod --json` | **失败 exit 1**，2 high / 1 moderate，未忽略/覆盖或重试掩盖                                            |
-| `pnpm cards:external`                         | 通过，551901-byte 外部 CCv3 PNG 校验与 JSON 往返；不复制上游内容进源码或 APK                           |
-| `pnpm apk:local --check`                      | 通过，本地 JDK/SDK/代理和 CA 前置可用；不是设备测试                                                    |
+| 命令                                          | 结果                                                                                                    |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`              | 通过，8 workspace；新增唯一运行依赖为 SDK 对齐的 MIT expo-crypto 58.0.7，用于随机 ID                    |
+| `pnpm check`                                  | 通过，13 文件 / 158 测试；含格式、lint、敏感文件、边界负例、TypeScript                                  |
+| `pnpm export:android`                         | 通过，Hermes bundle 3.3MB；首次因 NodeNext `.js` 指向 TS 源解析失败，增加 Metro 正常优先的源解析后通过  |
+| `pnpm audit --audit-level high --prod --json` | **失败 exit 1**，2 high / 1 moderate，未忽略/覆盖或重试掩盖                                             |
+| `pnpm cards:external`                         | 通过，551901-byte 外部 CCv3 PNG 校验与 JSON 往返；不复制上游内容进源码或 APK                            |
+| `pnpm apk:local`                              | 通过，JS bundle 46秒、ARM64 assembleRelease 4分55秒；APK v2、签名一致、Hermes、ZIP完整性及16KiB对齐通过 |
+| `pnpm apk:local --check`                      | 通过，本地 JDK/SDK/代理和 CA 前置可用；不是设备测试                                                     |
 
 Mock 端到端使用实际 Node HTTP SSE + Provider adapter + 生产 SQLite + Core：角色设定进入请求、流式文本、认证失败后重试、不重复用户消息、取消/断流和重新生成保留旧路径、切换成功候选、预算失败不丢输入、数据库关闭重开、超过 2000 条历史边界排除孤立 assistant 并明确提示。敏感凭据使用显式合成值，验证不会进入 SQL 或上下文快照。存储测试另含迁移回滚、跨会话隔离和中断恢复。
 
-日志保存在构建工作区 `artifacts/v01-*.log` / `v01-audit.json`，这些路径不是下载链接。APK 签名、大小、hash、交付与远端 CI 结果在构建后补充。
+日志保存在构建工作区 `artifacts/v01-*.log` / `v01-audit.json`，这些路径不是下载链接。APK 校验明细见 [版本记录](android-apk-v01-validation.json)。
+
+## 已完成交付
+
+- [手机 GitHub 下载页](https://github.com/Remote-yet-Candid/Mobile-ai-rp/releases/tag/untagged-d72eaab4dd3d1d26a550)：未发布 Draft，Release ID `415858022`。仓库实际是 public，但此草稿仅有写权限的登录账户可见；没有发布公开版本。
+- `mobile-ai-rp-v0.1.0-arm64.apk`，0.1.0 / code4，34,411,637 bytes；SHA256 `94d0949ade446a78c65710e34da9be04182efdf7bbecfed469edb436d1a596f4`。附加同名 `.sha256`；源码提交 `40563dfe5da4835238127bb6e6a1819217f74d0f`，未将 APK 或签名文件提交 Git。
+- [交付 Actions 39042495412](https://github.com/Remote-yet-Candid/Mobile-ai-rp/actions/runs/39042495412) 成功：校验固定分片/完整 hash 后附加完整文件，重新下载核验；已删除全部临时分片。云端另一次独立下载 APK 和校验文件，复核大小、hash、签名全部一致。Release 再次核对仍为 draft。
+- [独立 Draft PR #22](https://github.com/Remote-yet-Candid/Mobile-ai-rp/pull/22)，base `feat/gate0-foundation`；未合并。[源码功能 CI 39042171149](https://github.com/Remote-yet-Candid/Mobile-ai-rp/actions/runs/39042171149) 与 [交付提交功能 CI 39042499732](https://github.com/Remote-yet-Candid/Mobile-ai-rp/actions/runs/39042499732) 成功，均实际运行冻结安装、全套检查及 Android 导出。安全审计单独记录失败，不将功能绿灯称为正式发布放行。
+- Issue #7–#12 已保留原范围并更新实际进度及未完成项，未自动关闭。
 
 ## 风险与验收边界
 
