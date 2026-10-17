@@ -1,0 +1,53 @@
+name: Release preflight (manual)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  functional:
+    name: Release functional validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      CI: '1'
+      EXPO_NO_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - run: npm install --global pnpm@11.25.0
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check
+      - run: pnpm export:android
+  security:
+    name: Release security audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - run: npm install --global pnpm@11.25.0
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm audit --audit-level high --prod
+  prerequisites:
+    name: Release prerequisites
+    if: ${{ always() }}
+    needs: [functional, security]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      FUNCTIONAL_RESULT: ${{ needs.functional.result }}
+      SECURITY_RESULT: ${{ needs.security.result }}
+    steps:
+      - name: Require both checks to succeed
+        run: |
+          echo "Functional: $FUNCTIONAL_RESULT"
+          echo "Security: $SECURITY_RESULT"
+          if [ "$FUNCTIONAL_RESULT" != success ] || [ "$SECURITY_RESULT" != success ]; then
+            echo '::error::Production release is blocked. Human security and device reviews are required in addition.'
+            exit 1
+          fi
+          echo 'Automated checks passed. This does NOT publish artifacts or substitute for human security and device review.'
