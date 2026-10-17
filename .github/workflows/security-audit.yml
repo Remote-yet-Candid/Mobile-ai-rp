@@ -1,0 +1,36 @@
+name: Security audit (scheduled and manual)
+on:
+  schedule:
+    - cron: '0 6 1 * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: security-audit-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  audit:
+    name: Security audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - run: npm install --global pnpm@11.25.0
+      - run: pnpm install --frozen-lockfile
+      - name: Audit production dependency graph
+        id: audit
+        run: pnpm audit --audit-level high --prod
+      - name: Record security outcome
+        if: ${{ always() }}
+        env:
+          AUDIT_OUTCOME: ${{ steps.audit.outcome }}
+        run: |
+          {
+            echo '### Independent security audit'
+            echo "Audit step outcome: $AUDIT_OUTCOME"
+            echo 'Known upstream high-severity advisories: https://github.com/Remote-yet-Candid/Mobile-ai-rp/issues/7'
+            echo 'A failed audit remains failed. Development CI success is not a security waiver.'
+          } >> "$GITHUB_STEP_SUMMARY"
