@@ -1,5 +1,7 @@
 import type { RPMessage, RPRequest } from '@mobile-ai-rp/rp-provider';
 
+export * from './roleplay.js';
+
 export interface TokenMeter {
   measure(messages: readonly RPMessage[]): Readonly<{
     tokens: number;
