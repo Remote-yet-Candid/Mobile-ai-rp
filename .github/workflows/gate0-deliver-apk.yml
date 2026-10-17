@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: gate0-draft-415761004-delivery
+  group: gate0-draft-415812145-delivery
   cancel-in-progress: false
 
 jobs:
@@ -35,19 +35,19 @@ jobs:
           import tempfile
 
           repo = 'Remote-yet-Candid/Mobile-ai-rp'
-          release_id = 415761004
+          release_id = 415812145
           endpoint = f'repos/{repo}/releases/{release_id}'
-          tag = 'untagged-2a68d6ad11c8319d0221'
-          source_commit = '5ac871540b9314c8c6b3398d687dcd320b6323aa'
-          name = 'mobile-ai-rp-gate0-arm64.apk'
-          size = 34286401
-          expected = '1b8eafe2546423f13225c661b7a1b2b184652d9e335f11acdca97ab04e9533a9'
+          tag = 'gate0-android-0.0.3-code3'
+          source_commit = 'd5d22b3460900d25a5a5bae60a93414c9d836c75'
+          name = 'mobile-ai-rp-gate0-0.0.3-arm64.apk'
+          size = 34291329
+          expected = '5982b5f1b1effdc031fef51135d8af30941aff9905347faa6e7c82e433bfa3de'
           parts = [
-              (650435631, 'b54be39022d5d3c5b4a06d831d9c637283674837e3b1df7a0508e53990cfb3f3'),
-              (650435715, '09edf42bb086dbb3d0397460575cdfad8f320413fcd573d9d8d436d290dadb26'),
-              (650435776, '91dabb07a9b01e2e95b5698c8a545a83a32f269afa3362cfc6eaf766e3fabb3d'),
-              (650435869, '74c132c06f82e4d65779ad01c397160534788547f263f207e3055a8bf5c2d9fa'),
-              (650435928, '2fe5ba9fb073238a3d2d46d342e5ea602258fca3a386883c00777164423626db'),
+              (650521919, 'b54be39022d5d3c5b4a06d831d9c637283674837e3b1df7a0508e53990cfb3f3'),
+              (650521987, '09edf42bb086dbb3d0397460575cdfad8f320413fcd573d9d8d436d290dadb26'),
+              (650522067, '91dabb07a9b01e2e95b5698c8a545a83a32f269afa3362cfc6eaf766e3fabb3d'),
+              (650522133, '9acbf6c23ee4eed968399b7d3313b42b94e2b202ac7d27b2e08b2228630e41b2'),
+              (650522168, 'f512e4909449ed9dba83a1c99c674a3ef69303f9bb9407c61cb472d330ea7588'),
           ]
 
           def release():
@@ -76,7 +76,7 @@ jobs:
               if name not in assets:
                   with apk.open('wb') as output:
                       for index, (asset_id, checksum) in enumerate(parts):
-                          part_name = f'gate0-transfer-1b8eafe2-part-{index:02d}'
+                          part_name = f'gate0-transfer-5982b5f1-part-{index:02d}'
                           asset = assets[part_name]
                           if asset['id'] != asset_id or asset['state'] != 'uploaded':
                               raise RuntimeError('Unexpected transfer asset')
@@ -109,7 +109,7 @@ jobs:
 
               # Remove only these temporary assets after full round-trip verification.
               for index, (asset_id, _) in enumerate(parts):
-                  part_name = f'gate0-transfer-1b8eafe2-part-{index:02d}'
+                  part_name = f'gate0-transfer-5982b5f1-part-{index:02d}'
                   part = assets.get(part_name)
                   if part is not None:
                       if part['id'] != asset_id:
