@@ -15,7 +15,11 @@ rp-card-codecs为独立可移植数据包，不引用RN、Node文件系统、网
 | PNG重新编码/嵌入资产、CHARX、完整V2/V3 schema       | 未实现，不宣称完整规范兼容                                                                  |
 | Android文件选择/native运行                          | 接入DocumentPicker/File，类型与Metro导出验证；仍需真机                                      |
 
-限制：文件8MiB、JSON1MiB、预解析嵌套64层、树50000节点、PNG8192块/16MP像素声明。严格UTF-8、base64、CRC、有限且安全整数；对不能可靠round-trip的数字显式拒绝。PNG只读metadata，不解压IDAT，也不证明像素可渲染；zTXt/iTXt卡元数据显式拒绝。V1不在支持范围内。
+code3 限制：文件32MiB、UTF-8 JSON8MiB（含 PNG 内嵌 JSON）、预解析嵌套64层、树50000节点、PNG8192块/16MP像素声明。严格UTF-8、base64、CRC、有限且安全整数；对不能可靠round-trip的数字显式拒绝。PNG只读metadata，不解压IDAT，也不证明像素可渲染；zTXt/iTXt卡元数据显式拒绝。V1不在支持范围内。大卡只读范围经过主机合成文件验证，新上限下的真机内存与交互表现仍待验证，不承诺任意大小。
+
+`inspectImportFile` 先识别 V2/V3 卡或含 `prompts` / `prompt_order` 的生成预设。预设仅检查结构并显示条目计数，保留原数据对象，不应用模型参数、不构造 Prompt、不执行宏/正则/扩展；不能称为 SillyTavern 预设行为兼容。角色卡 API `readCardJson` 仍严格拒绝预设，避免把错误文件悄悄转换成角色。
+
+当前实际用户 JSON 附件为316198 bytes的生成预设，含100个提示词条目、1组顺序配置；主机只读解析与原始 JSON 字段深比较通过。原文件、正文、提示词、脚本与扩展内容不入库，不作为可再分发 fixture。详见[大卡反馈验证记录](validation/gate0-import-code3.md)。
 
 ## 可复现实物样本
 

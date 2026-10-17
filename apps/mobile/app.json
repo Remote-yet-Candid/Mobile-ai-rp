@@ -2,14 +2,14 @@
   "expo": {
     "name": "Mobile AI RP · Gate 0",
     "slug": "mobile-ai-rp",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "scheme": "mobile-ai-rp",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "platforms": ["android"],
     "android": {
       "package": "dev.mobileairp.gate0",
-      "versionCode": 2,
+      "versionCode": 3,
       "blockedPermissions": [
         "android.permission.SYSTEM_ALERT_WINDOW",
         "android.permission.READ_EXTERNAL_STORAGE",

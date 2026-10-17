@@ -22,7 +22,7 @@
 
 ## Gate 0退出清单
 
-- [ ] release/preview独立APK真实Android启动，无开发服务器依赖。
+- [x] 本地Release-mode code2 APK在HONOR90Pro安装启动，作者2026-10-17反馈通过（Android15 / MagicOS9.0）；EAS构建仍未验证。
 - [ ] 模拟或真实**网络**流可收可取消，含expo/fetch设备证据。
 - [ ] SQLite/FlashList 1000消息真机不卡死，分页与持久化有证据。
 - [ ] 许可清晰的真实CCv3 PNG/JSON可读与报告。
@@ -35,6 +35,8 @@
 
 GitHub API与官方React Native AAR域名在环境发布后已生效。5里程碑、20Issues已创建并复测去重；[草稿PR #21](https://github.com/Remote-yet-Candid/Mobile-ai-rp/pull/21)保持待审阅。CI安装/check/Android导出通过，audit仍因上游high失败，不自动合并。
 
-Expo令牌已配置但whoami返回bearer token invalid；需通过安全设置替换有效EXPO_TOKEN后再绑定项目/签名并运行EAS。不能在聊天贴令牌。本地ARM64构建不依赖Expo账户，已恢复。作者目标设备HONOR90Pro尚未连接，系统版本与所有真机出口仍待验收。
+Expo令牌此前whoami返回bearer token invalid；EAS仍未验证，本轮不处理Expo认证。本地ARM64构建不依赖Expo账户。作者已在HONOR90Pro（Android15 / MagicOS9.0）确认安装启动与已测基本功能正常；ADB、真实卡读取及正式性能证据仍未完成，不将其概括反馈扩大为网络和所有Gate0出口通过。
+
+当前针对作者大卡反馈推进code3：JSON上限8MiB、文件上限32MiB，保留结构保护；增加生成预设只读识别与准确的限制提示。实际上传的316198-byte附件是生成预设，不是角色卡，主机结构检查通过；真实大角色卡的手机复测待完成。见[code3验证记录](validation/gate0-import-code3.md)。不扩展Gate1完整聊天、世界书行为或预设执行。
 
 最新执行证据见[发布后验证报告](validation/gate0-adb-acceptance.md)；旧403与JDK修复历史保留在早期报告，不能作为当前阻塞依据。host实物CCv3读取与native网络/文件入口已完成，但不代表真机通过。G0-07依赖漏洞仍保持合并阻塞，先完成Gate0再扩展Gate1–3。

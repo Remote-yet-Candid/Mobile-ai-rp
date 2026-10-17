@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   CARD_LIMITS,
   CardImportError,
+  inspectImportFile,
   readCardJson,
   readCardPng,
   writeCardJson,
@@ -134,6 +135,103 @@ describe('JSON data-only card envelopes', () => {
       'too_large',
     );
   });
+  it('reads multi-MiB CJK cards with large unknown fields without truncation', () => {
+    const original = card();
+    original.data.description = '合成大卡测试。'.repeat(120000);
+    original.data.extensions.unknown.text = '未知字段保留'.repeat(50000);
+    const encoded = new TextEncoder().encode(JSON.stringify(original));
+    expect(encoded.byteLength).toBeGreaterThan(1024 * 1024);
+    expect(readCardJson(encoded).document).toEqual(original);
+    expect(readCardJson(writeCardJson(original)).document).toEqual(original);
+  });
+  it('accepts the exact UTF-8 byte boundary and reports one byte over it', () => {
+    const text = JSON.stringify(card());
+    const remaining = CARD_LIMITS.jsonBytes - Buffer.byteLength(text);
+    const exact = Buffer.from(text + ' '.repeat(remaining));
+    expect(readCardJson(exact).document.data.name).toBe('合成测试卡');
+    expect(() => readCardJson(Buffer.concat([exact, Buffer.from(' ')]))).toThrowError(
+      expect.objectContaining({
+        code: 'too_large',
+        limit: {
+          kind: 'jsonBytes',
+          maximum: CARD_LIMITS.jsonBytes,
+          actual: CARD_LIMITS.jsonBytes + 1,
+        },
+      }),
+    );
+  });
+});
+describe('file kind inspection without applying imported behavior', () => {
+  const encode = (value: unknown) => new TextEncoder().encode(JSON.stringify(value));
+  function preset() {
+    return {
+      temperature: 0.7,
+      prompts: Array.from({ length: 100 }, (_, index) => ({
+        identifier: `synthetic-${index}`,
+        content: '仅供数据检查的合成预设。'.repeat(120),
+        role: 'system',
+        unknown: { retained: true },
+      })),
+      prompt_order: [
+        {
+          character_id: 0,
+          order: [
+            { identifier: 'synthetic-0', enabled: true },
+            { identifier: 'synthetic-1', enabled: false },
+          ],
+        },
+      ],
+      extensions: { scripts: ['throw new Error("must not execute")'], unknown: { retained: true } },
+    };
+  }
+  it('identifies a large generation preset, counts order entries and preserves all data', () => {
+    const original = preset();
+    const input = encode(original);
+    const result = inspectImportFile(input);
+    expect(result.kind).toBe('prompt_preset');
+    if (result.kind !== 'prompt_preset') throw new Error('Wrong file kind');
+    expect(result.summary).toEqual({
+      promptCount: 100,
+      orderGroupCount: 1,
+      orderEntryCount: 2,
+      enabledOrderEntryCount: 1,
+      extensionKeyCount: 2,
+    });
+    expect(result.document).toEqual(original);
+    expect(result.byteLength).toBe(input.byteLength);
+    throwsCode(() => readCardJson(input), 'invalid_card');
+  });
+  it('keeps card validation strict and never downgrades malformed cards to presets', () => {
+    expect(inspectImportFile(encode(card())).kind).toBe('character_card');
+    throwsCode(
+      () => inspectImportFile(encode({ ...preset(), spec: 'chara_card_v3' })),
+      'invalid_card',
+    );
+    throwsCode(() => inspectImportFile(encode({ arbitrary: true })), 'unsupported_document');
+  });
+  it.each([
+    { prompts: [], prompt_order: null },
+    { prompts: [{ identifier: 'x', content: {} }], prompt_order: [] },
+    { prompts: [], prompt_order: [{ order: [{ identifier: 'x', enabled: 'true' }] }] },
+  ])('rejects malformed preset structures', (value) => {
+    throwsCode(() => inspectImportFile(encode(value)), 'invalid_preset');
+  });
+  it('enforces shared byte, nesting and node guards before recognizing presets', () => {
+    throwsCode(() => inspectImportFile(new Uint8Array(CARD_LIMITS.fileBytes + 1)), 'too_large');
+    const text = JSON.stringify(preset());
+    throwsCode(
+      () => inspectImportFile(new TextEncoder().encode(text + ' '.repeat(CARD_LIMITS.jsonBytes))),
+      'too_large',
+    );
+    throwsCode(
+      () => inspectImportFile(encode({ ...preset(), prompts: Array(50001).fill(null) })),
+      'too_large',
+    );
+    throwsCode(
+      () => inspectImportFile(new TextEncoder().encode('['.repeat(65) + '0' + ']'.repeat(65))),
+      'too_large',
+    );
+  });
 });
 describe('PNG bounded metadata container', () => {
   it('selects ccv3 regardless of chunk order, preserving unknown fields', () => {
@@ -153,6 +251,30 @@ describe('PNG bounded metadata container', () => {
     expect(
       readCardPng(png([metadata('chara', JSON.stringify(card('chara_card_v2')))])).document,
     ).toEqual(card('chara_card_v2'));
+  });
+  it('reads large PNG card metadata and an image container beyond the former 8 MiB cap', () => {
+    const original = card();
+    original.data.description = '合成PNG大卡'.repeat(70000);
+    const bytes = png([metadata('ccv3', JSON.stringify(original))], {
+      before: [
+        chunk('tEXt', Buffer.concat([Buffer.from('padding\0'), Buffer.alloc(8 * 1024 * 1024, 65)])),
+      ],
+    });
+    expect(bytes.length).toBeGreaterThan(8 * 1024 * 1024);
+    expect(readCardPng(bytes).document).toEqual(original);
+    expect(inspectImportFile(bytes).kind).toBe('character_card');
+  });
+  it('bounds decoded PNG JSON even when the outer PNG fits the file cap', () => {
+    const original = card();
+    original.data.description = 'x'.repeat(CARD_LIMITS.jsonBytes);
+    const bytes = png([metadata('ccv3', JSON.stringify(original))]);
+    expect(bytes.length).toBeLessThan(CARD_LIMITS.fileBytes);
+    expect(() => readCardPng(bytes)).toThrowError(
+      expect.objectContaining({
+        code: 'too_large',
+        limit: expect.objectContaining({ kind: 'jsonBytes' }),
+      }),
+    );
   });
   it('works with offset views into a larger buffer', () => {
     const bytes = png([metadata('ccv3', JSON.stringify(card()))]);

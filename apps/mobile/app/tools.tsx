@@ -13,10 +13,10 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link } from 'expo-router';
 import { prepareRequest } from '@mobile-ai-rp/rp-core';
-import { CardImportError } from '@mobile-ai-rp/rp-card-codecs';
 import { createNativeAdbProbe, createNativeNetworkProbe } from '../src/infra/provider';
 import { runNetworkAcceptance } from '../src/infra/network-acceptance';
 import { pickProbeCard } from '../src/infra/card-import';
+import { describeImportError, describeInspection } from '../src/infra/import-feedback';
 
 export default function GateZeroTools() {
   const dark = useColorScheme() === 'dark';
@@ -28,7 +28,7 @@ export default function GateZeroTools() {
   const [running, setRunning] = useState(false);
   const [importing, setImporting] = useState(false);
   const [networkStatus, setNetworkStatus] = useState('未运行；不发送密钥或真实聊天');
-  const [cardStatus, setCardStatus] = useState('未选择卡片；不会加载图片、外链或执行卡片脚本');
+  const [cardStatus, setCardStatus] = useState('未选择文件；角色卡读取 / 生成预设只读检查');
   const [output, setOutput] = useState('');
   const [adbReport, setAdbReport] = useState('');
   useEffect(() => {
@@ -120,19 +120,13 @@ export default function GateZeroTools() {
   async function importCard() {
     if (importing) return;
     setImporting(true);
+    setCardStatus('正在选择并检查文件…');
     try {
-      const card = await pickProbeCard();
-      if (mounted.current && card) {
-        const name = card.document.data.name.replace(/\s+/g, ' ').slice(0, 80);
-        setCardStatus(
-          `${name} · ${card.document.spec} · ${card.source}\n${card.warnings.join('；') || '基础读取通过'}\n仅本次验证，不持久化；Lorebook/宏行为尚未验证。`,
-        );
-      }
-    } catch (error) {
+      const result = await pickProbeCard();
       if (mounted.current)
-        setCardStatus(
-          `卡片读取失败：${error instanceof CardImportError ? error.code : 'file_read_failed'}`,
-        );
+        setCardStatus(result ? describeInspection(result) : '已取消选择，未导入文件。');
+    } catch (error) {
+      if (mounted.current) setCardStatus(describeImportError(error));
     } finally {
       if (mounted.current) setImporting(false);
     }
@@ -203,12 +197,13 @@ export default function GateZeroTools() {
             !adbReport,
           )}
           <Text accessibilityRole="header" style={[styles.title, { color: foreground }]}>
-            卡片 JSON / PNG
+            角色卡与生成预设
           </Text>
           <Text style={{ color: foreground }}>
-            8 MiB 文件 / 1 MiB JSON 限制；PNG 校验 CRC 并优先选择 ccv3。选择你有权使用的卡片。
+            支持 V2/V3 JSON / PNG 角色卡读取，以及 SillyTavern 生成预设的只读结构检查。 当前文件上限
+            32 MiB，JSON 文本上限 8 MiB（含 PNG 内嵌 JSON）；不自动截断大卡。
           </Text>
-          {button('选择本地 JSON / PNG 卡片', () => void importCard(), importing)}
+          {button('选择本地 JSON / PNG 文件', () => void importCard(), importing)}
           <Text selectable accessibilityLiveRegion="polite" style={{ color: foreground }}>
             {cardStatus}
           </Text>
