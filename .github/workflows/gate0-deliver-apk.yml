@@ -37,7 +37,8 @@ jobs:
           repo = 'Remote-yet-Candid/Mobile-ai-rp'
           release_id = 415761004
           endpoint = f'repos/{repo}/releases/{release_id}'
-          tag = 'gate0-android-0.0.2-code2'
+          tag = 'untagged-2a68d6ad11c8319d0221'
+          source_commit = '5ac871540b9314c8c6b3398d687dcd320b6323aa'
           name = 'mobile-ai-rp-gate0-arm64.apk'
           size = 34286401
           expected = '1b8eafe2546423f13225c661b7a1b2b184652d9e335f11acdca97ab04e9533a9'
@@ -51,7 +52,8 @@ jobs:
 
           def release():
               data = json.loads(subprocess.check_output(['gh', 'api', endpoint]))
-              if not data['draft'] or data['tag_name'] != tag:
+              if (not data['draft'] or data['tag_name'] != tag
+                      or data['target_commitish'] != source_commit):
                   raise RuntimeError('Only the designated unpublished draft is permitted')
               return data
 
