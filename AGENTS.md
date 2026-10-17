@@ -10,5 +10,5 @@ Read docs/PRD.md, docs/ARCHITECTURE.md, docs/GATE0_PLAN.md and the relevant desi
 - UI/native I/O belongs to apps/mobile; transport belongs to provider adapters. Preserve unknown card fields but never execute them. creator_notes are not default Prompt text.
 - Core APIs are experimental; version/migration/rollback notes accompany storage, format or public-contract changes. Never reset user databases to fix migration errors.
 - No keys, signing files or private chats in Git, fixtures, logs, exports or EXPO_PUBLIC variables. SecureStore holds future user keys by profile ID. Tests use only explicit synthetic values.
-- Gate 0 is not passed until real Android APK/network/cancel/1000-message/card evidence exists. Do not start broad Gate 1–3 implementation before its exit review.
+- Gate 0 is not passed until real Android APK/network/cancel/1000-message/card evidence exists. The author explicitly authorized parallel Gate 1 v0.1 prototype development while Gate 0/device and upstream security issues remain tracked. Keep formal-release security and human-review gates; do not claim unresolved risks or device tests passed.
 - Apache-2.0 was explicitly chosen by the author. Independently implement protocol behavior; do not copy incompatible GPL/AGPL source.

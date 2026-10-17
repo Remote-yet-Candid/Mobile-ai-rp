@@ -1,0 +1,26 @@
+{
+  "file": "mobile-ai-rp-v0.1.0-arm64.apk",
+  "bytes": 34411637,
+  "sha256": "94d0949ade446a78c65710e34da9be04182efdf7bbecfed469edb436d1a596f4",
+  "source_commit": "40563dfe5da4835238127bb6e6a1819217f74d0f",
+  "version": "0.1.0",
+  "version_code": 4,
+  "package": "dev.mobileairp.gate0",
+  "abi": ["arm64-v8a"],
+  "debuggable": false,
+  "hermes_header": "c61fbc03c103191f",
+  "signature_v2_verified": true,
+  "same_certificate_as_code2_code3": true,
+  "certificate_sha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+  "zip_integrity": "PASS",
+  "zipalign_16k": "PASS",
+  "permissions": [
+    "android.permission.INTERNET",
+    "android.permission.VIBRATE",
+    "android.permission.USE_BIOMETRIC",
+    "android.permission.USE_FINGERPRINT",
+    "dev.mobileairp.gate0.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+  ],
+  "network_config": "loopback-only cleartext; system TLS for HTTPS endpoints",
+  "device_upgrade_streaming_and_persistence": "pending user acceptance"
+}

@@ -57,7 +57,11 @@ def capture(name):
 
 def launch():
     command('shell', 'am', 'force-stop', package)
-    return command('shell', 'am', 'start', '-W', '-n', package + '/.MainActivity')
+    result = command('shell', 'am', 'start', '-W', '-n', package + '/.MainActivity')
+    if report.get('versionCode', 0) >= 4:
+        command('shell', 'am', 'start', '-W', '-a', 'android.intent.action.VIEW',
+                '-d', 'mobile-ai-rp://lab', package)
+    return result
 
 
 mock = None

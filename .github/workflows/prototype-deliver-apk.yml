@@ -1,0 +1,128 @@
+name: Deliver verified v0.1 prototype APK to draft release
+
+on:
+  push:
+    branches: [feat/v01-roleplay-prototype]
+    paths: [.github/workflows/prototype-deliver-apk.yml]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: prototype-draft-415858022-delivery
+  cancel-in-progress: false
+
+jobs:
+  deliver:
+    if: github.repository == 'Remote-yet-Candid/Mobile-ai-rp'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Reassemble, verify and attach existing APK without publishing
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import subprocess
+          import tempfile
+
+          repo = 'Remote-yet-Candid/Mobile-ai-rp'
+          release_id = 415858022
+          endpoint = f'repos/{repo}/releases/{release_id}'
+          source_commit = '40563dfe5da4835238127bb6e6a1819217f74d0f'
+          name = 'mobile-ai-rp-v0.1.0-arm64.apk'
+          size = 34411637
+          expected = '94d0949ade446a78c65710e34da9be04182efdf7bbecfed469edb436d1a596f4'
+          parts = [
+              (650729656, '821d46abf2ff3817e088a94f32d918f775dcdf0e9872803eb6e77acaccf7dcb0'),
+              (650729735, '1a61629bc21574b5960334594773311bfc5ca5d490c25a1a7f0d7f738de20d29'),
+              (650729792, 'a1f56eaf60be1b44dc65325cf296a646d402cc06a68716f14d1856b37cb50596'),
+              (650729869, '88b66c685f7647f5effc37e5b1552f8dfca7ff0e25287a5a593589096c59c7cd'),
+              (650729935, 'f1762b85022fb411406c5125fc8b74ca6cecb4a30892cb81737bee1047e87d53'),
+          ]
+
+          def release():
+              data = json.loads(subprocess.check_output(['gh', 'api', endpoint]))
+              if (data['id'] != release_id or not data['draft']
+                      or data['target_commitish'] != source_commit):
+                  raise RuntimeError('Only the designated unpublished draft is permitted')
+              return data
+
+          def digest(path):
+              with path.open('rb') as stream:
+                  return hashlib.file_digest(stream, 'sha256').hexdigest()
+
+          def download(asset, path):
+              with path.open('wb') as stream:
+                  subprocess.run([
+                      'gh', 'api', f"repos/{repo}/releases/assets/{asset['id']}",
+                      '-H', 'Accept: application/octet-stream',
+                  ], stdout=stream, check=True)
+
+          with tempfile.TemporaryDirectory(prefix='prototype-delivery-') as directory:
+              work = Path(directory)
+              data = release()
+              assets = {asset['name']: asset for asset in data['assets']}
+              apk = work / name
+              if name not in assets:
+                  with apk.open('wb') as output:
+                      for index, (asset_id, checksum) in enumerate(parts):
+                          part_name = f'v01-transfer-94d0949a-part-{index:02d}'
+                          asset = assets[part_name]
+                          if asset['id'] != asset_id or asset['state'] != 'uploaded':
+                              raise RuntimeError('Unexpected transfer asset')
+                          path = work / part_name
+                          download(asset, path)
+                          if digest(path) != checksum:
+                              raise RuntimeError('Transfer part checksum mismatch')
+                          output.write(path.read_bytes())
+                  if apk.stat().st_size != size or digest(apk) != expected:
+                      raise RuntimeError('Reassembled APK does not match verified original')
+                  current = release()
+                  subprocess.run([
+                      'gh', 'release', 'upload', current['tag_name'], str(apk), '--repo', repo,
+                  ], check=True)
+
+              data = release()
+              assets = {asset['name']: asset for asset in data['assets']}
+              asset = assets[name]
+              if (asset['state'] != 'uploaded' or asset['size'] != size
+                      or asset.get('digest') != 'sha256:' + expected):
+                  raise RuntimeError('Uploaded APK metadata mismatch')
+              downloaded = work / 'downloaded.apk'
+              download(asset, downloaded)
+              if downloaded.stat().st_size != size or digest(downloaded) != expected:
+                  raise RuntimeError('Round-trip APK verification failed')
+              checksum_file = work / (name + '.sha256')
+              download(assets[name + '.sha256'], checksum_file)
+              if checksum_file.read_text() != expected + '  ' + name + '\n':
+                  raise RuntimeError('Uploaded SHA256 file mismatch')
+
+              # Remove only these temporary assets after full round-trip verification.
+              for index, (asset_id, _) in enumerate(parts):
+                  part_name = f'v01-transfer-94d0949a-part-{index:02d}'
+                  part = assets.get(part_name)
+                  if part is not None:
+                      if part['id'] != asset_id:
+                          raise RuntimeError('Refusing to delete unexpected asset')
+                      subprocess.run([
+                          'gh', 'api', '--method', 'DELETE',
+                          f'repos/{repo}/releases/assets/{asset_id}',
+                      ], check=True)
+              release()
+              with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
+                  summary.write(
+                      'Original v0.1 prototype APK delivered and downloaded again for verification.\n\n'
+                      f'- APK: `{name}`\n- Bytes: {size}\n- SHA256: `{expected}`\n'
+                      '- SHA256 attachment verified; temporary parts removed.\n'
+                      '- Release remains an unpublished draft; no device test claimed.\n'
+                  )
+          PY
