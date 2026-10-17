@@ -36,7 +36,7 @@
 | Git新分支push dry-run                              | 通过                           | 写入通道预检查；最终远端分支以实际push/ls-remote为准                        |
 | pnpm audit --audit-level high --prod               | **退出1**                      | 两项上游high公告；metadata还报告1 moderate，见下方；CI保留阻塞              |
 | GitHub REST/GraphQL                                | **代理403**                    | api.github.com CONNECT拒绝；gh登录提示不证明需新增PAT                       |
-| 远端Actions / PR / Issues / milestones             | **未执行/创建**                | API阻塞；提交分支和可发布任务规格不等于已存在GitHub对象                     |
+| 远端PR / Issues / milestones                       | **本次未创建**                 | API阻塞；提交分支和可发布任务规格不等于已存在GitHub对象                     |
 | EAS APK / Android真机 / expo/fetch网络             | **未验证**                     | EXPO_TOKEN未配置、无project ID/签名、无连接设备                             |
 | 真实CCv3 JSON/PNG                                  | **未实现**                     | codecs仅预留契约；不以合成数据冒充真实卡                                    |
 
@@ -76,3 +76,9 @@ api.github.com域名补充已保存到环境草稿，尚未生效，最新实例
 5. 所有Gate0退出条件审阅通过后，才进入Gate1正式30轮聊天与生产存储/安全/Inspector；Gate2/3/P2目标完整保留在ROADMAP及原文。
 
 本次导出工件：`apps/mobile/dist/_expo/static/js/android/entry-dc5b53594c5fa0d2e1af4b8cf38961d8.hbc`，3095030字节，SHA256 `d7e193ec3a14f25d7f7b6b95a06e95f1f2ac432296415e5e665fd39ee3d647ef`。构建输出在ignored dist；以后每次导出应按当前工件重新记录，不把host导出耗时当手机基准。
+
+## 远端分支交付补记
+
+`git push --set-upstream origin feat/gate0-foundation`实际成功。随后`git ls-remote origin refs/heads/main refs/heads/feat/gate0-foundation`确认代码提交`0843a4b7df204a4f4cecf791d4d7782aee05f795`已到远端主题分支，main仍为`435dc1fb8d1ceafcdc51bd322c037c1ded657624`。该补记仅修改文档，后续提交继续fast-forward到同一分支，不直接推main。
+
+Actions workflow随分支推送可能自动触发，但由于GitHub API被拒绝，其远端运行结果**未查询/未验证**，不能称未运行或已通过。本次尚未通过API创建PR/Issues/milestones。可用GitHub返回的[创建PR入口](https://github.com/Remote-yet-Candid/Mobile-ai-rp/pull/new/feat/gate0-foundation)，正文已保存在.github/gate0-pr.md；该入口不是已存在的PR链接。
