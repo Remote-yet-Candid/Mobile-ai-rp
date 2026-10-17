@@ -1,0 +1,128 @@
+name: Deliver verified Gate 0 APK to draft release
+
+on:
+  push:
+    branches: [feat/gate0-foundation]
+    paths: [.github/workflows/gate0-deliver-apk.yml]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gate0-draft-415812145-delivery
+  cancel-in-progress: false
+
+jobs:
+  deliver:
+    if: github.repository == 'Remote-yet-Candid/Mobile-ai-rp'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Reassemble, verify and attach existing APK without publishing
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import subprocess
+          import tempfile
+
+          repo = 'Remote-yet-Candid/Mobile-ai-rp'
+          release_id = 415812145
+          endpoint = f'repos/{repo}/releases/{release_id}'
+          source_commit = 'd5d22b3460900d25a5a5bae60a93414c9d836c75'
+          name = 'mobile-ai-rp-gate0-0.0.3-arm64.apk'
+          size = 34291329
+          expected = '5982b5f1b1effdc031fef51135d8af30941aff9905347faa6e7c82e433bfa3de'
+          parts = [
+              (650521919, 'b54be39022d5d3c5b4a06d831d9c637283674837e3b1df7a0508e53990cfb3f3'),
+              (650521987, '09edf42bb086dbb3d0397460575cdfad8f320413fcd573d9d8d436d290dadb26'),
+              (650522067, '91dabb07a9b01e2e95b5698c8a545a83a32f269afa3362cfc6eaf766e3fabb3d'),
+              (650522133, '9acbf6c23ee4eed968399b7d3313b42b94e2b202ac7d27b2e08b2228630e41b2'),
+              (650522168, 'f512e4909449ed9dba83a1c99c674a3ef69303f9bb9407c61cb472d330ea7588'),
+          ]
+
+          def release():
+              data = json.loads(subprocess.check_output(['gh', 'api', endpoint]))
+              if (data['id'] != release_id or not data['draft']
+                      or data['target_commitish'] != source_commit):
+                  raise RuntimeError('Only the designated unpublished draft is permitted')
+              return data
+
+          def digest(path):
+              with path.open('rb') as stream:
+                  return hashlib.file_digest(stream, 'sha256').hexdigest()
+
+          def download(asset, path):
+              with path.open('wb') as stream:
+                  subprocess.run([
+                      'gh', 'api', f"repos/{repo}/releases/assets/{asset['id']}",
+                      '-H', 'Accept: application/octet-stream',
+                  ], stdout=stream, check=True)
+
+          with tempfile.TemporaryDirectory(prefix='gate0-delivery-') as directory:
+              work = Path(directory)
+              data = release()
+              assets = {asset['name']: asset for asset in data['assets']}
+              apk = work / name
+              if name not in assets:
+                  with apk.open('wb') as output:
+                      for index, (asset_id, checksum) in enumerate(parts):
+                          part_name = f'gate0-transfer-5982b5f1-part-{index:02d}'
+                          asset = assets[part_name]
+                          if asset['id'] != asset_id or asset['state'] != 'uploaded':
+                              raise RuntimeError('Unexpected transfer asset')
+                          path = work / part_name
+                          download(asset, path)
+                          if digest(path) != checksum:
+                              raise RuntimeError('Transfer part checksum mismatch')
+                          output.write(path.read_bytes())
+                  if apk.stat().st_size != size or digest(apk) != expected:
+                      raise RuntimeError('Reassembled APK does not match verified original')
+                  current = release()
+                  subprocess.run([
+                      'gh', 'release', 'upload', current['tag_name'], str(apk), '--repo', repo,
+                  ], check=True)
+
+              data = release()
+              assets = {asset['name']: asset for asset in data['assets']}
+              asset = assets[name]
+              if (asset['state'] != 'uploaded' or asset['size'] != size
+                      or asset.get('digest') != 'sha256:' + expected):
+                  raise RuntimeError('Uploaded APK metadata mismatch')
+              downloaded = work / 'downloaded.apk'
+              download(asset, downloaded)
+              if downloaded.stat().st_size != size or digest(downloaded) != expected:
+                  raise RuntimeError('Round-trip APK verification failed')
+              checksum_file = work / (name + '.sha256')
+              download(assets[name + '.sha256'], checksum_file)
+              if checksum_file.read_text() != expected + '  ' + name + '\n':
+                  raise RuntimeError('Uploaded SHA256 file mismatch')
+
+              # Remove only these temporary assets after full round-trip verification.
+              for index, (asset_id, _) in enumerate(parts):
+                  part_name = f'gate0-transfer-5982b5f1-part-{index:02d}'
+                  part = assets.get(part_name)
+                  if part is not None:
+                      if part['id'] != asset_id:
+                          raise RuntimeError('Refusing to delete unexpected asset')
+                      subprocess.run([
+                          'gh', 'api', '--method', 'DELETE',
+                          f'repos/{repo}/releases/assets/{asset_id}',
+                      ], check=True)
+              release()
+              with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
+                  summary.write(
+                      'Original Gate 0 APK delivered and downloaded again for verification.\n\n'
+                      f'- APK: `{name}`\n- Bytes: {size}\n- SHA256: `{expected}`\n'
+                      '- SHA256 attachment verified; temporary parts removed.\n'
+                      '- Release remains an unpublished draft; no device test claimed.\n'
+                  )
+          PY

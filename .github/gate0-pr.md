@@ -1,0 +1,21 @@
+The repository previously contained only a README. This PR establishes the first Gate 0 workspace and executable technical probes from the supplied v1.0 design, without implementing the full product.
+
+The pnpm/TypeScript monorepo separates portable RP Core and Provider contracts from injected HTTP/SSE transport, Expo UI and native storage. The Android lab has 1000 synthetic SQLite messages with keyset paging/FlashList v2, cancellation, expo/fetch HTTPS and explicit ADB loopback probes, and user-selected JSON/PNG card import. The ADB runner tests completion, first-delta abort and a clean subsequent request. Cleartext is limited to 127.0.0.1; broad storage/overlay permissions are removed. Public endpoints retain HTTPS/system trust. The codecs bound input size/depth, validate PNG container CRC, prefer ccv3 metadata, and preserve unknown JSON fields without executing them.
+
+The full design remains in docs/design/source-v1.0.md; docs/ROADMAP.md and .github/planning.json retain all P0/P1/P2 goals across five milestones and twenty issue specifications. The author selected Apache-2.0. Actual upstream card verification downloads a pinned external Seraphina PNG with checksum and attribution; no AGPL implementation, character text or image is vendored or relicensed.
+
+Validation on Node 24.19.0 / pnpm 11.25.0:
+
+- Frozen installation, format, lint, narrow sensitive-file checks, core boundary checks and package/App/test type checks pass.
+- 87 tests pass in 8 files, with no failures or skipped tests. They exercise host HTTP/SSE, fragmentation, cancellation/errors, persisted 1000-row paging, and bounded JSON/PNG decoding.
+- An external real CCv3 PNG selects ccv3 over chara, retains four extension fields, and round-trips its extracted JSON. This is one host Read/data test, not complete format/behavior or native compatibility.
+- Android export and both code2 Release-mode APK builds pass. ARM64: 34286401 bytes, SHA256 1b8eafe2546423f13225c661b7a1b2b184652d9e335f11acdca97ab04e9533a9; x86_64: 34,878,923 bytes, SHA256 65a8635814a0a9da95e1ad41ac25a40d2f6f4f23534f547e51d11a137db667e6. Signatures, ABI, embedded Hermes, ZIP/16KiB alignment, permissions and compiled loopback-only network rules pass static validation. Android Debug signing is for tests, not EAS/production.
+- Production audit remains failed on upstream node-forge/braces high advisories with no published fixes. The CI audit gate remains enabled.
+
+The published environment now permits GitHub API and official React Native artifact access. Five milestones and twenty Issues have been published (#1–#20); the planning publisher supports the installed gh 2.46 CLI. Remote CI on b79d84b confirms install, checks and Android export pass, with the audit step failing. EAS whoami reaches Expo but reports that the configured bearer token is invalid; account/project/signing remain unverified. Local ARM64 compilation and artifact validation are complete. Repeated planning publication reuses the same five milestones/twenty Issues without duplicates.
+
+Gate 0 remains open: HONOR 90 Pro installation and native networking/import/paging/performance evidence, valid EAS account/project/signing, trusted dependency fixes and human review are still required. No production chat workflow, complete lorebook, branch DAG, memory system or plugin platform is implemented. All APIs remain experimental/private and production storage is distinct from probe tables.
+
+See docs/validation/gate0-adb-acceptance.md, docs/ADB_ACCEPTANCE.md, docs/HONOR90PRO_ACCEPTANCE.md, docs/CARD_COMPATIBILITY.md and docs/LOCAL_ANDROID.md for exact outcomes, limitations and recovery. Keep the PR as draft; do not mark Gate 0 passed or merge automatically.
+
+An official AOSP API35 x86_64 emulator was attempted without KVM. It reached ADB but not full boot, and Android system_server logged an ANR. APK installation failed inside the incomplete Android storage service before app launch. The new device smoke script correctly refused UI tests before boot completion; its complete UI path remains unvalidated. The emulator was stopped. These are environment failures, not evidence of app startup or a physical-device performance result. Native Gate 0 exits remain open.

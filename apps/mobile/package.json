@@ -1,0 +1,45 @@
+{
+  "name": "@mobile-ai-rp/mobile",
+  "version": "0.0.0",
+  "private": true,
+  "main": "expo-router/entry",
+  "scripts": {
+    "start": "expo start",
+    "export:android": "expo export --platform android"
+  },
+  "dependencies": {
+    "@expo/metro-runtime": "58.0.14",
+    "@expo/ui": "58.0.20",
+    "@mobile-ai-rp/provider-openai-compat": "workspace:*",
+    "@mobile-ai-rp/rp-card-codecs": "workspace:*",
+    "@mobile-ai-rp/rp-core": "workspace:*",
+    "@mobile-ai-rp/rp-provider": "workspace:*",
+    "@mobile-ai-rp/storage-contracts": "workspace:*",
+    "@mobile-ai-rp/test-fixtures": "workspace:*",
+    "@shopify/flash-list": "2.3.2",
+    "expo": "58.0.14",
+    "expo-constants": "58.0.12",
+    "expo-document-picker": "58.0.4",
+    "expo-file-system": "58.0.9",
+    "expo-linking": "58.0.13",
+    "expo-router": "58.0.23",
+    "expo-secure-store": "58.0.2",
+    "expo-sqlite": "58.0.13",
+    "expo-status-bar": "58.0.3",
+    "expo-symbols": "58.0.4",
+    "expo-system-ui": "58.0.6",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-native": "0.88.0",
+    "react-native-gesture-handler": "3.3.0",
+    "react-native-reanimated": "4.7.1",
+    "react-native-safe-area-context": "5.10.1",
+    "react-native-screens": "4.30.0",
+    "react-native-web": "0.21.4",
+    "react-native-worklets": "0.13.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0"
+  },
+  "license": "Apache-2.0"
+}

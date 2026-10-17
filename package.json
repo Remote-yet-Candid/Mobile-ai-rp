@@ -1,0 +1,37 @@
+{
+  "name": "mobile-ai-rp",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.25.0",
+  "engines": {
+    "node": ">=24.3.0 <25"
+  },
+  "scripts": {
+    "build:packages": "tsc -b",
+    "boundaries": "node scripts/check-core-boundary.mjs",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "pnpm build:packages && tsc -p apps/mobile/tsconfig.json --noEmit && tsc -p tsconfig.tests.json",
+    "test": "pnpm build:packages && vitest run",
+    "check": "pnpm format:check && pnpm lint && pnpm secrets && pnpm boundaries && pnpm typecheck && pnpm test",
+    "export:android": "pnpm --filter @mobile-ai-rp/mobile export:android",
+    "mock:sse": "node scripts/mock-sse-server.mjs",
+    "planning:publish": "node scripts/publish-planning.mjs",
+    "secrets": "node scripts/check-sensitive-files.mjs",
+    "cards:external": "pnpm build:packages && node scripts/check-external-card.mjs",
+    "apk:local": "bash scripts/android-local-build.sh"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "24.19.2",
+    "eslint": "10.13.0",
+    "prettier": "3.9.10",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.71.2",
+    "vitest": "5.0.5",
+    "@mobile-ai-rp/test-fixtures": "workspace:*"
+  },
+  "license": "Apache-2.0"
+}

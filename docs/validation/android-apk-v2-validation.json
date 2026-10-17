@@ -1,0 +1,54 @@
+[
+  {
+    "file": "mobile-ai-rp-gate0-arm64.apk",
+    "bytes": 34286401,
+    "sha256": "1b8eafe2546423f13225c661b7a1b2b184652d9e335f11acdca97ab04e9533a9",
+    "sourceCommit": "5ac871540b9314c8c6b3398d687dcd320b6323aa",
+    "version": "0.0.2",
+    "versionCode": 2,
+    "abis": ["arm64-v8a"],
+    "minSdk": 24,
+    "targetSdk": 36,
+    "debuggable": false,
+    "signature": "v2 / Android Debug test certificate",
+    "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+    "embeddedHermesBytes": 2600976,
+    "embeddedHermesSha256": "c9dbc5e48545afa3be58f5a0410f56f2f510a2f60a8d0388164d00f349e6d094",
+    "zipIntegrity": true,
+    "zipalign16KiB": true,
+    "cleartextException": ["127.0.0.1"],
+    "publicHttpsCertificateVerification": "system default",
+    "removedPermissions": [
+      "SYSTEM_ALERT_WINDOW",
+      "READ_EXTERNAL_STORAGE",
+      "WRITE_EXTERNAL_STORAGE"
+    ],
+    "deviceValidation": "not passed; emulator boot failed before app startup; physical device unavailable"
+  },
+  {
+    "file": "mobile-ai-rp-gate0-x86_64.apk",
+    "bytes": 34878923,
+    "sha256": "65a8635814a0a9da95e1ad41ac25a40d2f6f4f23534f547e51d11a137db667e6",
+    "sourceCommit": "5ac871540b9314c8c6b3398d687dcd320b6323aa",
+    "version": "0.0.2",
+    "versionCode": 2,
+    "abis": ["x86_64"],
+    "minSdk": 24,
+    "targetSdk": 36,
+    "debuggable": false,
+    "signature": "v2 / Android Debug test certificate",
+    "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+    "embeddedHermesBytes": 2600976,
+    "embeddedHermesSha256": "c9dbc5e48545afa3be58f5a0410f56f2f510a2f60a8d0388164d00f349e6d094",
+    "zipIntegrity": true,
+    "zipalign16KiB": true,
+    "cleartextException": ["127.0.0.1"],
+    "publicHttpsCertificateVerification": "system default",
+    "removedPermissions": [
+      "SYSTEM_ALERT_WINDOW",
+      "READ_EXTERNAL_STORAGE",
+      "WRITE_EXTERNAL_STORAGE"
+    ],
+    "deviceValidation": "not passed; emulator boot failed before app startup; physical device unavailable"
+  }
+]

@@ -1,0 +1,35 @@
+name: Android preview (manual)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: android-preview-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    environment: android-preview
+    timeout-minutes: 60
+    env:
+      EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+      EXPO_NO_TELEMETRY: '1'
+      DISABLE_EAS_ANALYTICS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - run: npm install --global pnpm@11.25.0 eas-cli@25.1.1
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check
+      - name: Require configured account and project
+        working-directory: apps/mobile
+        run: |
+          test -n "$EXPO_TOKEN" || { echo 'Configure EXPO_TOKEN securely in android-preview environment'; exit 1; }
+          eas whoami
+          node -e 'if (!require("./app.json").expo.extra?.eas?.projectId) throw new Error("Link this app to its EAS project before building")'
+          eas project:info
+      - name: Build installable Android APK
+        working-directory: apps/mobile
+        run: eas build --platform android --profile preview --non-interactive

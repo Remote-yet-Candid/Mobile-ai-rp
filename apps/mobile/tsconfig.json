@@ -1,0 +1,10 @@
+{
+  "extends": "./node_modules/expo/tsconfig.base.json",
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noEmit": true
+  },
+  "include": ["app/**/*.tsx", "src/**/*.ts", "expo-env.d.ts"]
+}

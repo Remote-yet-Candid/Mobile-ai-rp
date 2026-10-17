@@ -1,0 +1,59 @@
+{
+  "checked_at": "2026-10-17T21:36:58.934473+08:00",
+  "sources": [
+    "GitHub Advisory REST API",
+    "npm registry metadata via pnpm view",
+    "pnpm audit --audit-level high --prod --json",
+    "pnpm why --prod",
+    "Android export source map"
+  ],
+  "advisories": [
+    {
+      "package": "node-forge",
+      "installed_version": "1.4.0",
+      "npm_latest": "1.4.0",
+      "ghsa": "GHSA-86w9-cpqp-85rv",
+      "cve": "CVE-2026-85393",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-86w9-cpqp-85rv",
+      "advisory_updated_at": "2026-10-01T21:09:10Z",
+      "withdrawn_at": null,
+      "affected_range": "<=1.4.0",
+      "first_patched_version": null,
+      "audit_path_count": 58,
+      "example_dependency_path": "apps__mobile>@expo/metro-runtime>@expo/log-box>@expo/dom-webview>expo>@expo/cli>@expo/code-signing-certificates>node-forge"
+    },
+    {
+      "package": "braces",
+      "installed_version": "3.0.3",
+      "npm_latest": "3.0.3",
+      "ghsa": "GHSA-vfj7-8cjw-p6xm",
+      "cve": "CVE-2026-93687",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+      "advisory_updated_at": "2026-10-02T22:36:34Z",
+      "withdrawn_at": null,
+      "affected_range": "<=3.0.3",
+      "first_patched_version": null,
+      "audit_path_count": 100,
+      "example_dependency_path": "apps__mobile>@expo/metro-runtime>@expo/log-box>@expo/dom-webview>expo>@expo/cli>@expo/metro>metro>metro-file-map>micromatch>braces"
+    }
+  ],
+  "audit_exit_code": 1,
+  "audit_counts": {
+    "info": 0,
+    "low": 0,
+    "moderate": 1,
+    "high": 2,
+    "critical": 0
+  },
+  "android_source_entries": 1400,
+  "android_source_package_matches": {
+    "node-forge": [],
+    "braces": []
+  },
+  "runtime_evidence_limit": "Current Android Metro bundle source paths; not a universal vulnerability clearance",
+  "lockfile_sha256": "daad3635fba72c0c0e624f6c0dd54102d1896c672b7b4a56317d6adcf5b9ae82",
+  "branch_protection_read_http_status": 403,
+  "github_required_checks_enforcement": "not verified; administrator configuration needed"
+}
