@@ -40,3 +40,5 @@ Expo令牌此前whoami返回bearer token invalid；EAS仍未验证，本轮不�
 当前针对作者大卡反馈完成code3构建与Draft交付：JSON上限8MiB、文件上限32MiB，保留结构保护；增加生成预设只读识别与准确的限制提示。实际上传的316198-byte附件是生成预设，不是角色卡，主机结构检查通过；真实大角色卡的手机复测待完成。见[code3验证记录与下载页](validation/gate0-import-code3.md)。不扩展Gate1完整聊天、世界书行为或预设执行。
 
 最新执行证据见[发布后验证报告](validation/gate0-adb-acceptance.md)；旧403与JDK修复历史保留在早期报告，不能作为当前阻塞依据。host实物CCv3读取与native网络/文件入口已完成，但不代表真机通过。G0-07依赖漏洞仍保持合并阻塞，先完成Gate0再扩展Gate1–3。
+
+CI结果按功能与安全分别记录，执行[安全/发布规则](SECURITY_RELEASE_GATE.md)。功能通过允许受控Gate0验收继续；审计和正式发布前置保持失败，不宣布整体Gate0或发布就绪。当前优先使用已交付code3完成真实卡、1000消息分页/重开、真实网络收流/取消的成组验收，再集中处理缺陷；CI/文档变化不重打APK。漏洞最新状态与CI拆分证据见[安全核验](validation/gate0-ci-security.md)。
