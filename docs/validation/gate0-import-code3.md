@@ -31,8 +31,23 @@
 - 大卡回归：多 MiB 中文 JSON、未知字段完整往返、精确 8 MiB UTF-8 边界、超过旧 8 MiB 的 PNG、内嵌 JSON 超限、深度/节点预算、预设与卡片区别、反馈不泄露正文/原生路径均通过。常规 CI 全用独立合成数据。
 - `pnpm export:android` 通过：1410 modules，Hermes bundle。
 - `pnpm audit --audit-level high --prod` 失败：2 high / 1 moderate，node-forge/braces 上游仍无补丁；合并阻塞保留。
-- 原生构建 preflight 通过；code3 ARM64 APK 构建与 Draft 交付进行中。真实 Android 大卡复测未运行。
+- 原生构建 preflight 和 ARM64 Release-mode 构建通过；assembleRelease 530 tasks，约4分54秒。Hermes 内确认含新增预设类型和错误码。静态证据见 [code3 APK 核验回执](android-apk-code3-validation.json)。
+- [GitHub CI 39035600309](https://github.com/Remote-yet-Candid/Mobile-ai-rp/actions/runs/39035600309) 的 frozen install、check、Android export 通过，audit 失败；没有跳过审计来获得绿色结果。
+
+## 新版 APK 交付完成
+
+[手机 Draft Release 下载页](https://github.com/Remote-yet-Candid/Mobile-ai-rp/releases/tag/untagged-d4834efff8e316f8edb3)，需登录有仓库写权限的账号。仓库本身为 public，附件保持未发布草稿访问范围，不描述为私有仓库或公开正式版本。
+
+- 文件：`mobile-ai-rp-gate0-0.0.3-arm64.apk`；34,291,329 bytes，ARM64 only，package `dev.mobileairp.gate0`。
+- SHA256：`5982b5f1b1effdc031fef51135d8af30941aff9905347faa6e7c82e433bfa3de`。
+- 应用源码：`d5d22b3460900d25a5a5bae60a93414c9d836c75`；构建分支与后续交付记录均在 Draft PR #21。
+- APK v2 签名通过，证书与 code2 一致：`fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c`。仍为 Android Debug 测试签名。
+- Release ID 415812145；APK asset 650524051，SHA256 asset 650522186。只保留这两个附件，未把 APK/分片提交 Git。
+- [Actions 39036161585](https://github.com/Remote-yet-Candid/Mobile-ai-rp/actions/runs/39036161585) 成功合并原文件、上传、下载校验并删除临时分片。当前云环境另行下载，确认大小、SHA256、校验文件内容和签名均通过。一次元数据 API 503 经有限重试恢复，不是待用户处理的权限阻塞。
+- 原 APK 与作者 JSON 相互独立；作者上传内容没有打入应用或 Release。
+
+code3 的手机覆盖安装、大卡读取和交互表现仍未运行，不能由此交付记录标记通过。
 
 ## 下一步
 
-构建、校验并通过 Draft Release 交付 code3。作者覆盖安装后选择本次预设，应显示“生成预设/只读结构检查”，再用实际 V2/V3 大角色卡验证新范围、重复选择、返回页面及原文件不变。超过新上限或触发结构限制的文件需按实际结构继续评估，不取消安全预算。ADB 当前不作为作者仅用手机的基础验收前置。
+作者覆盖安装 code3 后选择本次预设，应显示“生成预设/只读结构检查”，再用实际 V2/V3 大角色卡验证新范围、重复选择、返回页面及原文件不变。超过新上限或触发结构限制的文件需按实际结构继续评估，不取消安全预算。ADB 当前不作为作者仅用手机的基础验收前置。

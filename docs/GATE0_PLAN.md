@@ -37,6 +37,6 @@ GitHub API与官方React Native AAR域名在环境发布后已生效。5里程�
 
 Expo令牌此前whoami返回bearer token invalid；EAS仍未验证，本轮不处理Expo认证。本地ARM64构建不依赖Expo账户。作者已在HONOR90Pro（Android15 / MagicOS9.0）确认安装启动与已测基本功能正常；ADB、真实卡读取及正式性能证据仍未完成，不将其概括反馈扩大为网络和所有Gate0出口通过。
 
-当前针对作者大卡反馈推进code3：JSON上限8MiB、文件上限32MiB，保留结构保护；增加生成预设只读识别与准确的限制提示。实际上传的316198-byte附件是生成预设，不是角色卡，主机结构检查通过；真实大角色卡的手机复测待完成。见[code3验证记录](validation/gate0-import-code3.md)。不扩展Gate1完整聊天、世界书行为或预设执行。
+当前针对作者大卡反馈完成code3构建与Draft交付：JSON上限8MiB、文件上限32MiB，保留结构保护；增加生成预设只读识别与准确的限制提示。实际上传的316198-byte附件是生成预设，不是角色卡，主机结构检查通过；真实大角色卡的手机复测待完成。见[code3验证记录与下载页](validation/gate0-import-code3.md)。不扩展Gate1完整聊天、世界书行为或预设执行。
 
 最新执行证据见[发布后验证报告](validation/gate0-adb-acceptance.md)；旧403与JDK修复历史保留在早期报告，不能作为当前阻塞依据。host实物CCv3读取与native网络/文件入口已完成，但不代表真机通过。G0-07依赖漏洞仍保持合并阻塞，先完成Gate0再扩展Gate1–3。

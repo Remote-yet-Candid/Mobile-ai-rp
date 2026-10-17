@@ -1,10 +1,12 @@
 # Gate 0本地Android构建记录与恢复
 
-目标设备：作者提供HONOR 90 Pro，选择arm64-v8a。手机当前Android/MagicOS版本尚未记录，adb未连接设备。minSdk24，compileSdk37，targetSdk36；不宣称真机已运行。
+目标设备：作者提供HONOR 90 Pro，选择arm64-v8a。作者确认Android15 / MagicOS9.0，已反馈code2安装启动与已测基本功能正常；adb未连接设备，正式性能/网络/卡片证据尚缺。minSdk24，compileSdk37，targetSdk36。
 
 ## 当前结果
 
-当前code2（0.0.2）ARM64与x86_64 Release-mode构建/静态校验均通过；详细来源、签名、hash与失败的模拟器启动证据见[最新报告](validation/gate0-adb-acceptance.md)。ARM64工件34286401 bytes，SHA256 `1b8eafe2546423f13225c661b7a1b2b184652d9e335f11acdca97ab04e9533a9`。尚未通过Android实际安装/运行验收，EAS也未构建；不能将APK编译等同于Gate0通过。
+最新code3（0.0.3）ARM64 Release-mode构建、静态校验及Draft交付均通过；34291329 bytes，SHA256 `5982b5f1b1effdc031fef51135d8af30941aff9905347faa6e7c82e433bfa3de`。证书沿用code2，未改数据库；新读取范围的手机复测待完成，见[code3报告与下载页](validation/gate0-import-code3.md)。EAS本轮未构建，Gate0仍未通过。
+
+历史code2（0.0.2）ARM64与x86_64 Release-mode构建/静态校验均通过；来源、签名、hash与失败的模拟器启动证据见[code2报告](validation/gate0-adb-acceptance.md)。ARM64工件34286401 bytes，SHA256 `1b8eafe2546423f13225c661b7a1b2b184652d9e335f11acdca97ab04e9533a9`。不能将APK编译等同于Gate0通过。
 
 历史上首次缺JDK17已修正，第二次69任务后遇官方repo.reactnative.dev重定向403；这些失败不再代表当前下载/编译状态，保留旧日志供诊断。
 
