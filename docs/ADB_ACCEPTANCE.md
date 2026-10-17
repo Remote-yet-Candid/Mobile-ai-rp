@@ -4,7 +4,7 @@
 
 ## 手动网络验收
 
-电脑运行Node24与`pnpm mock:sse`，使用Android SDK的adb执行：
+电脑运行Node24与`pnpm mock:sse`（人工慢流测试可用`MOCK_INTERVAL_MS=1000 pnpm mock:sse`），使用Android SDK的adb执行：
 
 ```sh
 adb devices -l

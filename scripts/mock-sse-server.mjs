@@ -1,5 +1,10 @@
 import { createServer } from 'node:http';
 
+const intervalMs = Number(process.env.MOCK_INTERVAL_MS ?? 100);
+if (!Number.isSafeInteger(intervalMs) || intervalMs < 10 || intervalMs > 10000) {
+  throw new RangeError('MOCK_INTERVAL_MS must be an integer between 10 and 10000');
+}
+
 const server = createServer(async (request, response) => {
   if (request.method === 'GET' && request.url === '/health') {
     response.writeHead(200, { 'Content-Type': 'application/json' });
@@ -30,7 +35,7 @@ const server = createServer(async (request, response) => {
     response.write(
       `data: ${JSON.stringify({ choices: [{ delta: { content: parts[index++] } }] })}\n\n`,
     );
-    timer = setTimeout(send, 100);
+    timer = setTimeout(send, intervalMs);
   };
   response.on('close', () => clearTimeout(timer));
   send();

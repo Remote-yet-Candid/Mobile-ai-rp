@@ -1,5 +1,7 @@
 # Gate 0：环境发布后继续执行
 
+历史记录：code2与模拟器诊断等最新结果见[ADB验收后续报告](gate0-adb-acceptance.md)。以下保留code1原始工件证据。
+
 日期2026-10-17，分支feat/gate0-foundation，代码基线b79d84b。Gate0仍在进行，未进入Gate1。
 
 ## 环境与远端协作

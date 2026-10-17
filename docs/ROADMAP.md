@@ -76,4 +76,4 @@ Provider 扩展、多角色、可选向量、跨平台、受限插件、本地�
 
 Gate0退出前不开展完整Gate1功能；G1需要两后端、30轮对话、杀进程恢复和20轮异常回归；G2需要规则golden、跨分支隔离及1k/5k基线；G3需要可复现评估/失败案例/可回退APK。首个PR只交付foundation与风险spike，未完成的Issue保持打开。
 
-后续进展：G0-05的host实物PNG读取/提取JSON往返完成，native文件选择入口编译通过；G0-03的expo/fetch入口已接入但设备未验。G0-06的官方AAR域名在发布环境后已可下载，ARM64原生构建已恢复。最新结果见[发布后验证报告](validation/gate0-published-environment.md)；未满足验收的Issue继续保持打开。
+后续进展：G0-05的host实物PNG读取/提取JSON往返完成，native文件选择入口编译通过；G0-03的expo/fetch入口已接入但设备未验。G0-06的官方AAR域名在发布环境后已可下载，ARM64原生构建已恢复。最新结果见[发布后验证报告](validation/gate0-adb-acceptance.md)；未满足验收的Issue继续保持打开。

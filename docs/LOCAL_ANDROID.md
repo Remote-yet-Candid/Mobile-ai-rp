@@ -4,7 +4,7 @@
 
 ## 当前结果
 
-2026-10-17环境发布后，官方AAR下载已恢复，`pnpm apk:local`完整退出0：bundle子任务54s，assembleRelease 6m45s，530 actionable tasks（467 executed/63 up-to-date）。APK为artifacts/mobile-ai-rp-gate0-arm64.apk（34278797 bytes），v2测试签名、ARM64-only、内置Hermes、ZIP完整性及16KiB zipalign检查通过。SHA256 `87e7debed20137d29e734195fd1f3420f719a8e36ca2be4e5710d8cd8976d93e`。尚未安装或启动手机，EAS也尚未构建；详见[最新报告](validation/gate0-published-environment.md)。
+当前code2（0.0.2）ARM64与x86_64 Release-mode构建/静态校验均通过；详细来源、签名、hash与失败的模拟器启动证据见[最新报告](validation/gate0-adb-acceptance.md)。ARM64工件34286401 bytes，SHA256 `1b8eafe2546423f13225c661b7a1b2b184652d9e335f11acdca97ab04e9533a9`。尚未通过Android实际安装/运行验收，EAS也未构建；不能将APK编译等同于Gate0通过。
 
 历史上首次缺JDK17已修正，第二次69任务后遇官方repo.reactnative.dev重定向403；这些失败不再代表当前下载/编译状态，保留旧日志供诊断。
 
@@ -42,4 +42,4 @@ pnpm apk:local               # 本次完整运行通过；可复用缓存再构�
 
 当前原生目录由Expo生成且被Git忽略；不将生成的debug.keystore提交Git。不覆盖未来人工维护的原生工程，SDK/config插件变化先审阅再明确重新生成。Release-mode probe默认使用Expo模板DEBUG测试签名；未来真实EAS发布必须独立配置正确签名与application ID。不得当作production版发布。
 
-当前成功日志：artifacts/android-local-bundle.log、android-local-build.log；静态核验回执docs/validation/android-apk-validation.json。历史日志：artifacts/android-release-build.log（缺JDK17）、android-release-build-jdk17.log（AAR403）、android-sdk-install.log。已经下载的SDK/缓存随环境文件保留，但草稿保存不等于发布快照或验证新任务恢复。
+当前成功日志：artifacts/apk-arm64-v2-command.log、apk-x86_64-v2-command.log；静态核验回执docs/validation/android-apk-v2-validation.json。历史日志：artifacts/android-release-build.log（缺JDK17）、android-release-build-jdk17.log（AAR403）、android-sdk-install.log。已经下载的SDK/缓存随环境文件保留，但草稿保存不等于发布快照或验证新任务恢复。

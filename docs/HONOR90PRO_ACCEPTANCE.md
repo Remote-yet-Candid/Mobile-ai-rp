@@ -31,3 +31,5 @@
 ## 回填到Issue #6
 
 将以下非敏感结果填写至[构建与真机验收任务](https://github.com/Remote-yet-Candid/Mobile-ai-rp/issues/6)：日期、设备/系统、APK来源/hash/commit、安装与独立启动、1k消息持久化/分页/滚动、进程内取消、expo/fetch网络收流/取消/断流、卡片Read、原始性能样本、失败步骤。未执行项写“未执行”，不要直接勾全表。源码与host测试不能证明真机通过。
+
+code2支持通过USB/ADB转发到本机模拟服务，并提供自动收流/首片段取消/恢复报告。详细命令与未完成的自动化验证限制见[ADB_ACCEPTANCE](ADB_ACCEPTANCE.md)。

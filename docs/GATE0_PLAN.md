@@ -37,4 +37,4 @@ GitHub API与官方React Native AAR域名在环境发布后已生效。5里程�
 
 Expo令牌已配置但whoami返回bearer token invalid；需通过安全设置替换有效EXPO_TOKEN后再绑定项目/签名并运行EAS。不能在聊天贴令牌。本地ARM64构建不依赖Expo账户，已恢复。作者目标设备HONOR90Pro尚未连接，系统版本与所有真机出口仍待验收。
 
-最新执行证据见[发布后验证报告](validation/gate0-published-environment.md)；旧403与JDK修复历史保留在早期报告，不能作为当前阻塞依据。host实物CCv3读取与native网络/文件入口已完成，但不代表真机通过。G0-07依赖漏洞仍保持合并阻塞，先完成Gate0再扩展Gate1–3。
+最新执行证据见[发布后验证报告](validation/gate0-adb-acceptance.md)；旧403与JDK修复历史保留在早期报告，不能作为当前阻塞依据。host实物CCv3读取与native网络/文件入口已完成，但不代表真机通过。G0-07依赖漏洞仍保持合并阻塞，先完成Gate0再扩展Gate1–3。

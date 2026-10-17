@@ -1,6 +1,6 @@
 # Android构建和真机验收
 
-当前Android Hermes导出与本地Release-mode ARM64 APK编译/静态校验通过；APK使用生成的DEBUG测试签名，尚未在HONOR90Pro安装运行。详见LOCAL_ANDROID.md与validation/gate0-published-environment.md。Expo API可访问，但配置凭据被whoami与只读GraphQL返回bearer token invalid，EAS尚未提交构建。EAS云构建不要求本机Android SDK，但需要Expo账户、项目绑定及Android签名。不要把Key/token发送到聊天或提交Git。
+当前Android Hermes导出与本地Release-mode ARM64 APK编译/静态校验通过；APK使用生成的DEBUG测试签名，尚未在HONOR90Pro安装运行。详见LOCAL_ANDROID.md与validation/gate0-adb-acceptance.md。Expo API可访问，但配置凭据被whoami与只读GraphQL返回bearer token invalid，EAS尚未提交构建。EAS云构建不要求本机Android SDK，但需要Expo账户、项目绑定及Android签名。不要把Key/token发送到聊天或提交Git。
 
 1. 在正式构建任务中安全配置EXPO_TOKEN或使用已授权CLI登录。核对账户权限后，在apps/mobile用`eas init`绑定正确项目，审阅生成的extra.eas.projectId，不编造ID。
 2. `dev.mobileairp.gate0`是实验package ID；公开发布前确认归属/最终application ID与升级连续性，不能随意改变已安装用户的签名/ID。
@@ -14,7 +14,7 @@
 ## 真机记录模板
 
 - 设备/Android/API/内存：未记录
-- APK：本地测试APK已生成，基线b79d84b、0.0.1/code1、hash见validation/android-apk-validation.json；EAS build ID/镜像尚无
+- APK：本地测试APK已生成，App源码5ac8715、0.0.2/code2、hash见validation/android-apk-v2-validation.json；EAS build ID/镜像尚无
 - 独立安装/冷启动（无Metro）：未验证
 - SQLite准备1000消息、50条分页、滑动、关闭重开：未验证
 - expo/fetch模拟/真实网络流收取、取消、弱网、断流：未验证

@@ -30,7 +30,7 @@ pnpm mock:sse                 # 可选：合成 HTTP SSE 服务；Ctrl-C停止
 - `packages/rp-provider`：Provider能力与流式事件类型；`provider-openai-compat`：独立网络适配器。
 - `packages/storage-contracts`：存储端口；`test-fixtures`：原创合成数据；`rp-card-codecs`：有界 JSON/PNG 数据读取。
 
-[完整设计原文](docs/design/source-v1.0.md) · [Gate 0计划](docs/GATE0_PLAN.md) · [路线图与Issues](docs/ROADMAP.md) · [架构](docs/ARCHITECTURE.md) · [最新验证记录](docs/validation/gate0-published-environment.md) · [贡献规范](CONTRIBUTING.md)
+[完整设计原文](docs/design/source-v1.0.md) · [Gate 0计划](docs/GATE0_PLAN.md) · [路线图与Issues](docs/ROADMAP.md) · [架构](docs/ARCHITECTURE.md) · [最新验证记录](docs/validation/gate0-adb-acceptance.md) · [贡献规范](CONTRIBUTING.md)
 
 GitHub任务规格在 `.github/planning.json`。`pnpm planning:publish --dry-run` 预览；GitHub API权限和网络可用后，`pnpm planning:publish` 幂等创建里程碑和Issues，保留已有任务编辑与关闭状态。发布后收据在 `artifacts/planning-published.json`。该命令会写GitHub，不属于安装步骤。
 
@@ -40,4 +40,6 @@ GitHub任务规格在 `.github/planning.json`。`pnpm planning:publish --dry-run
 
 当前安全扫描存在未修复的上游high公告，合并门槛保持失败，详见验证记录。没有密钥或真实聊天数据写入仓库。不要将Key放入EXPO_PUBLIC变量、应用打包配置、日志或备份。
 
-已补[卡片兼容证据](docs/CARD_COMPATIBILITY.md)、[本地Android构建](docs/LOCAL_ANDROID.md)及[HONOR90Pro验收步骤](docs/HONOR90PRO_ACCEPTANCE.md)。83项host测试通过，真实CCv3 PNG读取/提取JSON往返已实测；真机网络/取消/分页/卡片/性能仍待验证。5个里程碑、20个Issues及[草稿PR #21](https://github.com/Remote-yet-Candid/Mobile-ai-rp/pull/21)已创建，Gate0继续保持开放。
+已补[卡片兼容证据](docs/CARD_COMPATIBILITY.md)、[本地Android构建](docs/LOCAL_ANDROID.md)及[HONOR90Pro验收步骤](docs/HONOR90PRO_ACCEPTANCE.md)。87项host测试通过，真实CCv3 PNG读取/提取JSON往返已实测；真机网络/取消/分页/卡片/性能仍待验证。5个里程碑、20个Issues及[草稿PR #21](https://github.com/Remote-yet-Candid/Mobile-ai-rp/pull/21)已创建，Gate0继续保持开放。
+
+code2新增[ADB网络验收与设备冒烟入口](docs/ADB_ACCEPTANCE.md)，用于收流/取消/恢复及设备结果回填；云机软件模拟器未完成开机，不能替代真机结果。
