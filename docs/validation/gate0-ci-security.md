@@ -32,6 +32,19 @@
 - `pnpm why node-forge --prod`、`pnpm why braces --prod`：完成；包与版本和锁文件一致。
 - `pnpm view <package> version dist-tags --json` 与 `versions --json`：完成；最新版仍落在漏洞范围。
 - `pnpm export:android --source-maps`：通过，产出Hermes与map，完成上述模块清单核验。
-- YAML经Prettier解析/格式检查通过；`pnpm check`通过，9 files / 100 tests，格式、lint、敏感文件、Core边界及类型检查通过。拆分后远端Job待本次实际执行后记录。
+- YAML经Prettier解析/格式检查通过；`pnpm check`通过，9 files / 100 tests，格式、lint、敏感文件、Core边界及类型检查通过。
+- 提取实际发布前置shell，在隔离临时环境执行两个Job结果的16种组合（success/failure/cancelled/skipped）：只有success/success返回0，其余均返回1；没有修改workflow输出或伪造远端状态。
+
+### 拆分后 GitHub 实测
+
+[CI run 39037357160](https://github.com/Remote-yet-Candid/Mobile-ai-rp/actions/runs/39037357160)，提交`b5b12babba014903f3b830b4573adc1990af13c0`，只触发一份pull_request运行：
+
+| Job                   | 实际结果 | 证据                                                              |
+| --------------------- | -------- | ----------------------------------------------------------------- |
+| Functional validation | success  | frozen install、pnpm check、Android导出均success                  |
+| Security audit        | failure  | 安装success，原始audit命令failure；后续summary成功没有改变Job失败 |
+| Release prerequisites | failure  | 已执行，读取functional=success、security=failure后退出1，不是跳过 |
+
+整个CI结论仍为failure，符合要求；未重跑相同未修复漏洞来获取绿色结果。修改限定为CI、模板与风险/验收文档，应用、依赖清单、锁文件均未改变，没有制作或上传新APK。远端权限保护的管理员设置仍待核对，不能将以上失败检查等同于已完成仓库强制配置。
 
 下一步优先以现有code3 APK完成真实卡、分页/持久化和网络/取消证据。安全修复等待可信上游版本/兼容依赖链，变更时再审查发布来源与完整性、更新锁文件、重跑功能/导出/审计并进行人工安全评审；当前Issue #7保持打开。
