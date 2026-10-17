@@ -1,3 +1,5 @@
+> 本文件是第一阶段历史结果；后续状态见 [Gate 0后续执行报告](gate0-followup.md)。
+
 # Gate 0第一阶段验证报告
 
 日期：2026-10-17（Asia/Shanghai）。范围：foundation + 可执行风险spike。**Gate 0未通过；非可发行APK。**

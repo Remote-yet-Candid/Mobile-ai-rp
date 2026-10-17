@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, useColorScheme, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlashList } from '@shopify/flash-list';
+import { Link } from 'expo-router';
 import { prepareRequest } from '@mobile-ai-rp/rp-core';
 import { OpenAICompatibleProvider } from '@mobile-ai-rp/provider-openai-compat';
 import { createMockStreamFetch, createProbeMessages } from '@mobile-ai-rp/test-fixtures';
@@ -144,6 +145,9 @@ export default function GateZeroLab() {
       <Text style={{ color: foreground }}>
         技术验证壳 · SQLite / FlashList / SSE · 不代表正式产品
       </Text>
+      <Link href="/tools" style={{ color: foreground }}>
+        打开网络与卡片验证 →
+      </Link>
       <View style={styles.actions}>
         {button('准备 1000 条合成消息', () => void load(true), !ready || busy)}
         {button(

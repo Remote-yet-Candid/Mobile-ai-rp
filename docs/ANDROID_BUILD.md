@@ -1,6 +1,6 @@
 # Android构建和真机验收
 
-当前只有Android Hermes bundle导出能力；没有已生成/安装的APK。EAS云构建不要求本机Android SDK，但需要Expo账户、项目绑定及Android签名。不要把Key/token发送到聊天或提交Git。
+当前Android Hermes bundle导出通过；本地原生工程/SDK/JDK17已准备并尝试编译，但AAR下载被repo.reactnative.dev代理403阻塞，没有已生成/安装的APK。详见LOCAL_ANDROID.md。EAS云构建不要求本机Android SDK，但需要Expo账户、项目绑定及Android签名。不要把Key/token发送到聊天或提交Git。
 
 1. 在正式构建任务中安全配置EXPO_TOKEN或使用已授权CLI登录。核对账户权限后，在apps/mobile用`eas init`绑定正确项目，审阅生成的extra.eas.projectId，不编造ID。
 2. `dev.mobileairp.gate0`是实验package ID；公开发布前确认归属/最终application ID与升级连续性，不能随意改变已安装用户的签名/ID。
@@ -23,3 +23,5 @@
 - 升级/卸载数据策略/回退：未验证
 
 Lab内模拟是进程内SSE，不替代网络或真机验证。首次APK验收由持有Android设备的人按上述清单完成，问题回填对应Issue。
+
+当前验收设备为作者指定HONOR90Pro（ARM64），系统版本/实际安装/独立启动/性能仍未记录。/tools提供HTTPS expo/fetch与本地卡片选择入口，尚未在设备运行验证。

@@ -1,17 +1,19 @@
-The repository previously contained only a README. This introduces the first Gate 0 foundation from the supplied v1.0 design: a pnpm/TypeScript workspace, portable RP Core and Provider contracts, an injected SSE adapter, and an Android Expo probe with SQLite keyset paging, FlashList v2, and synthetic streaming cancellation.
+The repository previously contained only a README. This PR establishes the first Gate 0 workspace and executable technical probes from the supplied v1.0 design, without implementing the full product.
 
-The full design is preserved in docs/design/source-v1.0.md. docs/GATE0_PLAN.md scopes this PR to the first technical spike; docs/ROADMAP.md and .github/planning.json retain P0/P1/P2 across five milestones and twenty issue specifications. scripts/publish-planning.mjs can publish them without duplicating plan markers. The author selected Apache-2.0.
+The pnpm/TypeScript monorepo separates portable RP Core and Provider contracts from injected HTTP/SSE transport, Expo UI and native storage. The Android lab has 1000 synthetic SQLite messages with keyset paging/FlashList v2, cancellation, a new expo/fetch HTTPS probe, and user-selected JSON/PNG card import. The codecs bound input size/depth, validate PNG container CRC, prefer ccv3 metadata, and preserve unknown JSON fields without executing them.
+
+The full design remains in docs/design/source-v1.0.md; docs/ROADMAP.md and .github/planning.json retain all P0/P1/P2 goals across five milestones and twenty issue specifications. The author selected Apache-2.0. Actual upstream card verification downloads a pinned external Seraphina PNG with checksum and attribution; no AGPL implementation, character text or image is vendored or relicensed.
 
 Validation on Node 24.19.0 / pnpm 11.25.0:
 
-- Frozen installation, package build, formatting, lint, narrow sensitive-file checks, core boundary checks, and application/test type checks pass.
-- 58 tests pass in 6 files, with no failures or skipped tests. Contracts exercise actual host HTTP, fragmented Unicode/SSE, cancellation/errors, and persisted 1000-row SQL paging.
-- Android Hermes export succeeds (1383 modules). This is a JS bundle, not an APK or native-device result.
-- The standalone mock HTTP service passes health and functional SSE requests.
-- Production dependency audit fails on upstream node-forge and braces high advisories with no published patched versions currently available. The CI audit gate remains enabled. See docs/validation/gate0-foundation.md and planned G0-07.
+- Frozen installation, format, lint, narrow sensitive-file checks, core boundary checks and package/App/test type checks pass.
+- 83 tests pass in 7 files, with no failures or skipped tests. They exercise host HTTP/SSE, fragmentation, cancellation/errors, persisted 1000-row paging, and bounded JSON/PNG decoding.
+- An external real CCv3 PNG selects ccv3 over chara, retains four extension fields, and round-trips its extracted JSON. This is one host Read/data test, not complete format/behavior or native compatibility.
+- Android Hermes export succeeds (1408 modules). Expo prebuild succeeds. SDK/NDK/CMake and checksum-verified JDK17 are prepared; local Release ARM64 Gradle build reaches 69 executed tasks but fails because the official AAR redirect repo.reactnative.dev is proxy-denied. No APK exists yet.
+- Production audit remains failed on upstream node-forge/braces high advisories with no published fixes. The CI audit gate remains enabled.
 
-Gate 0 remains open: EAS account/project/signing, installable APK, Android expo/fetch networking, physical-device performance, and licensed real CCv3 JSON/PNG evidence are still required. Codec support is only a reserved contract. No full lorebook, production chat workflow, branch DAG, memory system, or plugin platform is implemented here.
+GitHub API policy currently prevents publishing the prepared milestone/Issue specifications or querying remote CI. Required API/AAR hosts and the missing EXPO_TOKEN requirement are saved in the environment draft; draft saving is not runtime policy application or publication.
 
-Storage is an isolated Gate 0 probe database rather than the production schema. SQL constraint failures are preserved; repeated deterministic seeding only ignores sequence conflicts. Provider errors omit raw exceptions, keys, and response bodies. No credentials or private chats are included. EAS preview is manual and receives no secrets from external PRs. Public APIs remain private/experimental; production migration and rollback requirements are documented before future implementation.
+Gate 0 remains open: an installable APK, HONOR 90 Pro native networking/import/paging/performance evidence, EAS account/project/signing, trusted dependency fixes and human review are still required. No production chat workflow, complete lorebook, branch DAG, memory system or plugin platform is implemented. All APIs remain experimental/private and production storage is distinct from probe tables.
 
-Keep this PR as draft until the audit and required validation blockers are reviewed. Do not mark the overall Gate 0 exit checklist complete or merge automatically.
+See docs/validation/gate0-followup.md, docs/CARD_COMPATIBILITY.md and docs/LOCAL_ANDROID.md for exact outcomes, limitations and recovery. Keep the PR as draft; do not mark Gate 0 passed or merge automatically.

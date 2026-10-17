@@ -75,3 +75,5 @@ Provider 扩展、多角色、可选向量、跨平台、受限插件、本地�
 | §16 最终方向/P2                     | G3-02、P2-01，按证据和反馈决策              |
 
 Gate0退出前不开展完整Gate1功能；G1需要两后端、30轮对话、杀进程恢复和20轮异常回归；G2需要规则golden、跨分支隔离及1k/5k基线；G3需要可复现评估/失败案例/可回退APK。首个PR只交付foundation与风险spike，未完成的Issue保持打开。
+
+后续进展：G0-05的host实物PNG读取/提取JSON往返完成，native文件选择入口编译通过；G0-03的expo/fetch入口已接入但设备未验。G0-06已准备SDK/JDK17并跑原生任务，现被官方AAR域名403阻塞。详情见validation/gate0-followup.md，远端任务仍未创建。

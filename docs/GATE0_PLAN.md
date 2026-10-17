@@ -36,3 +36,5 @@
 GitHub API被代理403拒绝，已保存api.github.com网络补充草稿；需要环境设置保存生效，之后运行planning publisher创建任务，并创建draft PR。Git读权限不等于API/写权限，按实际命令记录。
 
 Expo账户凭据未配置、无EAS project ID/签名，也无连接Android真机。本阶段不索要聊天中的密钥；未来通过安全环境设置配置，先做不依赖这些条件的工作。当前上游high漏洞跟踪G0-07，保留CI合并阻塞。
+
+后续执行已完成host实物CCv3数据读取与native网络/文件验证入口，SDK/JDK17匹配问题已修正；本地原生构建又定位到repo.reactnative.dev AAR跳转403。最新进展/待办见validation/gate0-followup.md，Gate0仍不勾选真机出口。

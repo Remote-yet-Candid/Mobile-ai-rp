@@ -19,3 +19,5 @@ Provider adapter负责URL/认证/HTTP/SSE/abort/timeout/错误映射。接口不
 编译产物通过package exports供Node测试，react-native条件解析源TS供Metro。TS project references固定依赖方向。每个包暂为private/0.0.0，不声称公共SDK稳定或已发布npm。
 
 默认不存完整Prompt、聊天文本日志或认证头。Card codecs未来只解码允许的数据字段、保存unknown extensions，不能执行JS/HTML；creator_notes不默认进入Prompt。兼容分Read/Render/Prompt/Behavior/Round-trip五级，见API_COMPATIBILITY和DATA_FORMATS。
+
+后续codec/Native probe：rp-card-codecs仅处理有界bytes/JSON，不导入RN/Node I/O；App infra/card-import负责明确选择的本地缓存副本。infra/provider将expo/fetch注入Provider适配器，/tools仅发送固定合成数据，不读取或发送卡片/Key。文件/网络操作不迁入Core。

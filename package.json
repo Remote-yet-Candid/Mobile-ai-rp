@@ -19,7 +19,9 @@
     "export:android": "pnpm --filter @mobile-ai-rp/mobile export:android",
     "mock:sse": "node scripts/mock-sse-server.mjs",
     "planning:publish": "node scripts/publish-planning.mjs",
-    "secrets": "node scripts/check-sensitive-files.mjs"
+    "secrets": "node scripts/check-sensitive-files.mjs",
+    "cards:external": "pnpm build:packages && node scripts/check-external-card.mjs",
+    "apk:local": "bash scripts/android-local-build.sh"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
